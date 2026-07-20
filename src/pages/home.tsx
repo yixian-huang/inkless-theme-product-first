@@ -6,12 +6,22 @@ import {
   SITE_CONFIG_GLOBAL_DEFAULT,
   pickLocaleValue,
   useGlobalConfig,
+  useHeaderSettings,
   useLocaleMode,
   useSEODefaults,
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
 import { resolveProductCtas } from "../chrome/resolveProductCtas";
-import { useHeaderSettings } from "@inkless/theme-host";
+import {
+  btnPrimary,
+  btnSecondary,
+  btnGhost,
+  card,
+  codeBlock,
+  sectionLabel,
+  sectionTitle,
+  sectionLead,
+} from "../ui/classes";
 
 type Localized = { zh?: string; en?: string; [k: string]: string | undefined };
 
@@ -89,8 +99,10 @@ const PLACEHOLDER_STEPS = [
   },
 ];
 
+const FEATURE_MARKS = ["◇", "▣", "◎"];
+
 /**
- * product-first home — software product landing (not corporate service blocks).
+ * product-first home — polished software product landing.
  */
 export default function ProductFirstHomePage() {
   const { config } = useGlobalConfig();
@@ -112,7 +124,6 @@ export default function ProductFirstHomePage() {
   };
 
   const siteConfig = (config as any)?.siteConfig ?? SITE_CONFIG_GLOBAL_DEFAULT;
-  // Load product home schema from host public content (content_documents.home).
   const [homeCfg, setHomeCfg] = useState<ProductHomeConfig>(
     () =>
       ((config as any)?.home ??
@@ -133,7 +144,7 @@ export default function ProductFirstHomePage() {
           setHomeCfg(cfg);
         }
       } catch {
-        /* keep placeholder / bootstrap config */
+        /* keep placeholder */
       }
     })();
     return () => {
@@ -190,64 +201,99 @@ export default function ProductFirstHomePage() {
         ogImage={defaultOgImage}
       />
 
-      {/* Hero — full-bleed band, content constrained */}
-      <section className="border-b border-border bg-surface font-sans">
-        <ProductPageShell className="py-16 md:py-24">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border font-sans">
+        {/* Atmosphere: soft grid + teal glow — decorative only */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-surface"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.45]"
+          aria-hidden
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px), " +
+              "linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, black 20%, transparent 75%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute -top-32 left-1/2 h-[28rem] w-[48rem] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 35%, transparent), transparent)",
+          }}
+        />
+
+        <ProductPageShell className="relative py-20 md:py-28">
           <div className="max-w-3xl">
-            {heroEyebrow ? (
-              <p className="text-sm font-medium tracking-wide text-accent mb-3">{heroEyebrow}</p>
-            ) : null}
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-on-surface leading-tight">
+            <div className="flex flex-wrap items-center gap-3 mb-5">
+              {heroEyebrow ? (
+                <span className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wide text-accent">
+                  {heroEyebrow}
+                </span>
+              ) : null}
+              {heroBadge ? (
+                <span className="inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-surface-alt border border-border text-on-surface-muted">
+                  {heroBadge}
+                </span>
+              ) : null}
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-[3.25rem] font-semibold tracking-tight text-on-surface leading-[1.12] text-balance">
               {heroTitle}
             </h1>
             {heroSubtitle ? (
-              <p className="mt-5 text-lg text-on-surface-muted leading-relaxed">{heroSubtitle}</p>
-            ) : null}
-            {heroBadge ? (
-              <p className="mt-3 inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-surface-alt border border-border text-on-surface-muted">
-                {heroBadge}
+              <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed max-w-2xl text-pretty">
+                {heroSubtitle}
               </p>
             ) : null}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href={primaryHref}
-                className="inline-flex items-center justify-center rounded-md bg-primary text-on-primary px-5 py-2.5 text-sm font-semibold hover:opacity-90"
-              >
+
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <a href={primaryHref} className={btnPrimary}>
                 {primaryLabel}
+                <span aria-hidden className="opacity-80">
+                  →
+                </span>
               </a>
-              <a
-                href={secondaryHref}
-                className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-on-surface hover:bg-surface-alt"
-              >
+              <a href={secondaryHref} className={btnSecondary}>
                 {secondaryLabel}
               </a>
-              <Link
-                to="/features"
-                className="text-sm font-medium text-on-surface-muted hover:text-on-surface px-2"
-              >
-                Features →
+              <Link to="/features" className={`${btnGhost} px-2 py-2`}>
+                Features
+                <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
         </ProductPageShell>
       </section>
 
-      {/* Features grid */}
+      {/* Features */}
       <section className="bg-surface font-sans">
-        <ProductPageShell className="py-16 md:py-20">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface">
-            {featuresTitle}
-          </h2>
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ProductPageShell className="py-20 md:py-24">
+          <p className={sectionLabel}>{pick({ zh: "能力", en: "Product" })}</p>
+          <h2 className={sectionTitle}>{featuresTitle}</h2>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {featureItems.map((item, i) => (
-              <div
-                key={i}
-                className="rounded-lg border border-border bg-surface-alt/60 p-6 space-y-2"
-              >
-                <h3 className="text-base font-semibold text-on-surface">
+              <div key={i} className={card}>
+                <div
+                  className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
+                  }}
+                  aria-hidden
+                />
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent text-lg">
+                  <span aria-hidden>{FEATURE_MARKS[i % FEATURE_MARKS.length]}</span>
+                </div>
+                <h3 className="text-base font-semibold tracking-tight text-on-surface">
                   {pick(item.title, `Feature ${i + 1}`)}
                 </h3>
-                <p className="text-sm text-on-surface-muted leading-relaxed">
+                <p className="mt-2 text-sm text-on-surface-muted leading-relaxed">
                   {pick(item.description)}
                 </p>
               </div>
@@ -257,23 +303,26 @@ export default function ProductFirstHomePage() {
       </section>
 
       {/* How it works */}
-      <section className="border-t border-border bg-surface font-sans">
-        <ProductPageShell className="py-16 md:py-20">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface">
-            {howTitle}
-          </h2>
-          <ol className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="border-t border-border bg-surface-alt/40 font-sans">
+        <ProductPageShell className="py-20 md:py-24">
+          <p className={sectionLabel}>{pick({ zh: "流程", en: "Workflow" })}</p>
+          <h2 className={sectionTitle}>{howTitle}</h2>
+          <ol className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 relative">
             {steps.map((step, i) => (
-              <li key={i} className="space-y-2">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary text-sm font-semibold">
-                  {i + 1}
-                </span>
-                <h3 className="text-base font-semibold text-on-surface">
-                  {pick(step.title, `Step ${i + 1}`)}
-                </h3>
-                <p className="text-sm text-on-surface-muted leading-relaxed">
-                  {pick(step.description)}
-                </p>
+              <li key={i} className="relative">
+                <div className="flex items-start gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-on-primary text-sm font-bold shadow-md shadow-primary/20">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="pt-1 min-w-0">
+                    <h3 className="text-base font-semibold tracking-tight text-on-surface">
+                      {pick(step.title, `Step ${i + 1}`)}
+                    </h3>
+                    <p className="mt-2 text-sm text-on-surface-muted leading-relaxed">
+                      {pick(step.description)}
+                    </p>
+                  </div>
+                </div>
               </li>
             ))}
           </ol>
@@ -281,49 +330,82 @@ export default function ProductFirstHomePage() {
       </section>
 
       {/* Install */}
-      <section id="install" className="border-t border-border bg-surface-alt font-sans">
-        <ProductPageShell className="py-16 md:py-20">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface">
-            {installTitle}
-          </h2>
-          {installCaption ? (
-            <p className="mt-3 text-on-surface-muted text-sm">{installCaption}</p>
-          ) : null}
-          <pre className="mt-6 overflow-x-auto rounded-lg border border-border bg-surface p-4 text-sm text-on-surface font-mono leading-relaxed">
-            <code>{installCode}</code>
-          </pre>
-          {ctas.docsUrl ? (
-            <p className="mt-4 text-sm text-on-surface-muted">
-              Full install guide:{" "}
-              <a
-                href={ctas.docsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent font-medium hover:underline"
-              >
-                Docs
-              </a>
-            </p>
-          ) : null}
+      <section id="install" className="border-t border-border bg-surface font-sans scroll-mt-24">
+        <ProductPageShell className="py-20 md:py-24">
+          <div className="md:grid md:grid-cols-12 md:gap-10 md:items-start">
+            <div className="md:col-span-4">
+              <p className={sectionLabel}>{pick({ zh: "上手", en: "Install" })}</p>
+              <h2 className={sectionTitle}>{installTitle}</h2>
+              {installCaption ? <p className={sectionLead}>{installCaption}</p> : null}
+              {ctas.docsUrl ? (
+                <p className="mt-6">
+                  <a
+                    href={ctas.docsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={btnGhost}
+                  >
+                    Full docs ↗
+                  </a>
+                </p>
+              ) : null}
+            </div>
+            <div className="md:col-span-8 mt-8 md:mt-0">
+              <div className="rounded-2xl border border-border overflow-hidden shadow-xl shadow-on-surface/5">
+                <div className="flex items-center gap-2 px-4 py-3 bg-[#0a0f1a] border-b border-white/10">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
+                  <span className="ml-3 text-[11px] font-medium tracking-wide text-slate-400">
+                    terminal
+                  </span>
+                </div>
+                <pre className={`${codeBlock} mt-0 rounded-none border-0 shadow-none`}>
+                  <code>{installCode}</code>
+                </pre>
+              </div>
+            </div>
+          </div>
         </ProductPageShell>
       </section>
 
       {/* Bottom CTA */}
-      <section className="border-t border-border bg-surface font-sans">
-        <ProductPageShell className="py-16 md:py-20 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface">
+      <section className="relative overflow-hidden border-t border-border font-sans">
+        <div className="absolute inset-0 bg-primary" aria-hidden />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-30"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 80% at 80% 50%, var(--color-accent), transparent)",
+          }}
+        />
+        <ProductPageShell className="relative py-20 md:py-24 text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-on-primary text-balance">
             {bottomTitle}
           </h2>
           {bottomSubtitle ? (
-            <p className="mt-3 text-on-surface-muted max-w-xl mx-auto">{bottomSubtitle}</p>
+            <p className="mt-4 text-base md:text-lg text-on-primary/75 max-w-xl mx-auto text-pretty">
+              {bottomSubtitle}
+            </p>
           ) : null}
-          <div className="mt-8 flex justify-center">
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
             <a
               href={bottomCtaHref}
-              className="inline-flex items-center justify-center rounded-md bg-primary text-on-primary px-6 py-2.5 text-sm font-semibold hover:opacity-90"
+              className="inline-flex items-center justify-center rounded-lg bg-surface text-on-surface px-6 py-2.5 text-sm font-semibold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               {bottomCtaLabel}
             </a>
+            {ctas.githubUrl ? (
+              <a
+                href={ctas.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-lg border border-on-primary/25 bg-transparent text-on-primary px-6 py-2.5 text-sm font-semibold transition-colors hover:bg-on-primary/10"
+              >
+                GitHub
+              </a>
+            ) : null}
           </div>
         </ProductPageShell>
       </section>
