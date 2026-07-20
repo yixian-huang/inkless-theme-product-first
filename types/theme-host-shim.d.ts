@@ -62,6 +62,7 @@ declare module "@inkless/theme-host" {
     showSocials: boolean;
     [key: string]: unknown;
   };
+  export function useThemeSettings(): Record<string, unknown>;
   export function useGlobalConfig(): { config: any; features?: any; locale?: string };
   export function useSEODefaults(): {
     defaultTitle: string;

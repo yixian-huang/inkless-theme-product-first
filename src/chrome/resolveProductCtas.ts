@@ -16,24 +16,33 @@ const DEFAULTS = {
   secondaryCtaHref: "https://github.com/yixian-huang/inkless",
 };
 
+function pickSetting(settings: Record<string, unknown>, key: keyof typeof DEFAULTS): string {
+  const header = settings.header;
+  const candidates = [
+    settings[key],
+    settings[`header.${key}`],
+    header && typeof header === "object" ? (header as Record<string, unknown>)[key] : undefined,
+  ];
+  for (const v of candidates) {
+    if (typeof v === "string" && v.trim()) return v.trim();
+  }
+  return DEFAULTS[key];
+}
+
 /**
  * Resolve CTA / external links from theme settings with safe defaults.
- * Site-specific copy should come from settings or home content — not hard-coded marketing.
+ * Accepts flat keys, `header.*` keys, or nested `{ header: { docsUrl } }` config.
  */
 export function resolveProductCtas(
   settings?: Record<string, unknown> | null,
 ): Required<ProductCtaSettings> {
   const s = settings ?? {};
-  const str = (key: keyof typeof DEFAULTS) => {
-    const v = s[key];
-    return typeof v === "string" && v.trim() ? v.trim() : DEFAULTS[key];
-  };
   return {
-    docsUrl: str("docsUrl"),
-    githubUrl: str("githubUrl"),
-    primaryCtaLabel: str("primaryCtaLabel"),
-    primaryCtaHref: str("primaryCtaHref"),
-    secondaryCtaLabel: str("secondaryCtaLabel"),
-    secondaryCtaHref: str("secondaryCtaHref"),
+    docsUrl: pickSetting(s, "docsUrl"),
+    githubUrl: pickSetting(s, "githubUrl"),
+    primaryCtaLabel: pickSetting(s, "primaryCtaLabel"),
+    primaryCtaHref: pickSetting(s, "primaryCtaHref"),
+    secondaryCtaLabel: pickSetting(s, "secondaryCtaLabel"),
+    secondaryCtaHref: pickSetting(s, "secondaryCtaHref"),
   };
 }

@@ -60,7 +60,7 @@ export const productFirstTheme: ThemePlugin = {
     description: "Software product landing: hero, features, install CTA, optional changelog",
     descriptionZh: "软件产品介绍站：主视觉、能力、安装引导、可选更新日志",
     author: "Inkless CMS",
-    version: "0.1.3",
+    version: "0.1.4",
     type: "theme",
     preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
     tags: ["product", "landing", "oss"],

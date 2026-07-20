@@ -4,13 +4,14 @@ import {
   useBranding,
   useContentMaxWidth,
   useHeaderSettings,
+  useThemeSettings,
   type HeaderChromeProps,
 } from "@inkless/theme-host";
 import { resolveProductCtas } from "./resolveProductCtas";
 import { btnHeaderCta, linkQuiet } from "../ui/classes";
 
 function ProductHeaderCtas() {
-  const settings = useHeaderSettings() as Record<string, unknown>;
+  const settings = useThemeSettings() as Record<string, unknown>;
   const ctas = resolveProductCtas(settings);
 
   return (

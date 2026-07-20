@@ -6,9 +6,9 @@ import {
   SITE_CONFIG_GLOBAL_DEFAULT,
   pickLocaleValue,
   useGlobalConfig,
-  useHeaderSettings,
   useLocaleMode,
   useSEODefaults,
+  useThemeSettings,
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
 import { resolveProductCtas } from "../chrome/resolveProductCtas";
@@ -119,7 +119,7 @@ export default function ProductFirstHomePage() {
   const { config } = useGlobalConfig();
   const { defaultTitle, defaultDescription, defaultOgImage } = useSEODefaults();
   const { localeMode, defaultLocale, currentLocale } = useLocaleMode();
-  const settings = useHeaderSettings() as Record<string, unknown>;
+  const settings = useThemeSettings() as Record<string, unknown>;
   const ctas = resolveProductCtas(settings);
 
   const pick = (value: Localized | string | undefined, fallback = "") => {

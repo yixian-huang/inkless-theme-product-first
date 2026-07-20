@@ -2,7 +2,7 @@ import {
   ProductPoweredBy,
   useBranding,
   useContentMaxWidth,
-  useHeaderSettings,
+  useThemeSettings,
   type FooterChromeProps,
 } from "@inkless/theme-host";
 import { resolveProductCtas } from "./resolveProductCtas";
@@ -11,7 +11,7 @@ import { linkQuiet } from "../ui/classes";
 export default function ProductFooter({ config }: FooterChromeProps) {
   const branding = useBranding();
   const maxWidth = useContentMaxWidth();
-  const settings = useHeaderSettings() as Record<string, unknown>;
+  const settings = useThemeSettings() as Record<string, unknown>;
   const ctas = resolveProductCtas(settings);
   const copyright = config?.copyright ?? branding.footer.copyright;
   const style = config?.style ?? "minimal";

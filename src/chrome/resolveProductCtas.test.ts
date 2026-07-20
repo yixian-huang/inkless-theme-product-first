@@ -19,4 +19,16 @@ describe("resolveProductCtas", () => {
     expect(c.primaryCtaLabel).toBe("Try it");
     expect(c.primaryCtaHref).toBe("/signup");
   });
+
+  it("reads nested header config from installed theme", () => {
+    const c = resolveProductCtas({
+      header: {
+        docsUrl: "https://docs.from-header",
+        githubUrl: "https://github.com/x",
+      },
+    });
+    expect(c.docsUrl).toBe("https://docs.from-header");
+    expect(c.githubUrl).toBe("https://github.com/x");
+  });
 });
+
