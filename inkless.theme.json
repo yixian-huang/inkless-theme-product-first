@@ -2,7 +2,7 @@
   "id": "product-first",
   "name": "Product First",
   "nameZh": "产品优先",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "contractVersion": "1",
   "author": "Inkless CMS",
   "description": "Software product landing: hero, features, install CTA, optional changelog",
