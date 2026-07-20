@@ -1,0 +1,22 @@
+{
+  "id": "product-first",
+  "name": "Product First",
+  "nameZh": "产品优先",
+  "version": "0.1.0",
+  "contractVersion": "1",
+  "author": "Inkless CMS",
+  "description": "Software product landing: hero, features, install CTA, optional changelog",
+  "descriptionZh": "软件产品介绍站：主视觉、能力、安装引导、可选更新日志",
+  "tags": ["product", "landing", "oss", "saas"],
+  "umd": "dist/theme.umd.js",
+  "esm": "dist/theme.es.js",
+  "entry": {
+    "builtin": "src/index.ts",
+    "register": "src/register.ts"
+  },
+  "peerHost": {
+    "sharedGlobal": "__INKLESS_SHARED__",
+    "hostGlobal": "InklessThemeHost",
+    "registerGlobal": "__INKLESS_THEME_REGISTER__"
+  }
+}
