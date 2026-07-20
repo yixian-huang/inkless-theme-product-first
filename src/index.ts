@@ -21,13 +21,13 @@ export const PRODUCT_DEFAULT_LAYOUT = {
 
 export const productFirstTokens: ThemeTokens = {
   colors: {
-    // Near-ink neutrals + teal accent — product SaaS, not corporate blue-green
+    // Align with Inkless mark (#2563eb) + ink neutrals — product, not consulting teal
     primary: "#0f172a",
     primaryDark: "#020617",
-    accent: "#0d9488",
-    accentHover: "#0f766e",
-    surface: "#fbfcfe",
-    surfaceAlt: "#f1f5f9",
+    accent: "#2563eb",
+    accentHover: "#1d4ed8",
+    surface: "#ffffff",
+    surfaceAlt: "#f8fafc",
     onPrimary: "#f8fafc",
     onSurface: "#0f172a",
     onSurfaceMuted: "#64748b",
@@ -60,9 +60,9 @@ export const productFirstTheme: ThemePlugin = {
     description: "Software product landing: hero, features, install CTA, optional changelog",
     descriptionZh: "软件产品介绍站：主视觉、能力、安装引导、可选更新日志",
     author: "Inkless CMS",
-    version: "0.1.2",
+    version: "0.1.3",
     type: "theme",
-    preview: "linear-gradient(135deg, #0f172a 0%, #0d9488 100%)",
+    preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
     tags: ["product", "landing", "oss"],
   },
   contractVersion: PRODUCT_FIRST_CONTRACT_VERSION,
@@ -135,21 +135,21 @@ export const productFirstTheme: ThemePlugin = {
       id: "default",
       name: "Ink Product",
       nameZh: "墨色产品",
-      preview: "linear-gradient(135deg, #0f172a 0%, #0d9488 100%)",
+      preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
       tokens: productFirstTokens,
     },
     {
       id: "midnight",
       name: "Midnight",
       nameZh: "午夜",
-      preview: "linear-gradient(135deg, #020617 0%, #14b8a6 100%)",
+      preview: "linear-gradient(135deg, #020617 0%, #3b82f6 100%)",
       tokens: {
         ...productFirstTokens,
         colors: {
           primary: "#e2e8f0",
           primaryDark: "#f8fafc",
-          accent: "#2dd4bf",
-          accentHover: "#5eead4",
+          accent: "#60a5fa",
+          accentHover: "#93c5fd",
           surface: "#0b1220",
           surfaceAlt: "#111827",
           onPrimary: "#0f172a",

@@ -58,7 +58,7 @@ export default function ProductHeader({ config }: HeaderChromeProps) {
       config={config}
       variant="blog"
       languagePlacement="inline"
-      headerClassName="bg-surface/80 backdrop-blur-xl border-b border-border/70 font-sans supports-[backdrop-filter]:bg-surface/70"
+      headerClassName="bg-white/85 backdrop-blur-xl border-b border-border/70 font-sans supports-[backdrop-filter]:bg-white/75"
       navPaddingClassName="py-3.5"
       containerClassName="mx-auto px-4 md:px-content w-full"
       containerStyle={{ maxWidth }}

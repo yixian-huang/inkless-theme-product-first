@@ -2,9 +2,9 @@
 
 export const btnPrimary =
   "inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary text-on-primary " +
-  "px-5 py-2.5 text-sm font-semibold shadow-sm shadow-primary/20 " +
-  "transition-all duration-200 hover:bg-primary-dark hover:shadow-md hover:shadow-primary/25 " +
-  "active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  "px-5 py-2.5 text-sm font-semibold shadow-sm shadow-primary/15 " +
+  "transition-all duration-200 hover:bg-primary-dark hover:shadow-md " +
+  "active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent whitespace-nowrap";
 
 export const btnSecondary =
   "inline-flex items-center justify-center gap-1.5 rounded-lg border border-border bg-surface " +

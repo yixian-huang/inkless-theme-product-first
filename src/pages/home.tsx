@@ -244,10 +244,10 @@ export default function ProductFirstHomePage() {
 
         <ProductPageShell className="relative py-16 md:py-24 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-            <div className="lg:col-span-5 max-w-xl">
+            <div className="lg:col-span-5 max-w-xl min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-5">
                 {heroEyebrow ? (
-                  <span className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wide text-accent">
+                  <span className="inline-flex items-center rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wide text-accent whitespace-nowrap">
                     {heroEyebrow}
                   </span>
                 ) : null}
@@ -258,11 +258,11 @@ export default function ProductFirstHomePage() {
                 ) : null}
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-[3.1rem] font-semibold tracking-tight text-on-surface leading-[1.12] text-balance">
+              <h1 className="text-4xl sm:text-5xl md:text-[3.1rem] font-semibold tracking-tight text-on-surface leading-[1.15] break-words">
                 {heroTitle}
               </h1>
               {heroSubtitle ? (
-                <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed text-pretty">
+                <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed break-words">
                   {heroSubtitle}
                 </p>
               ) : null}
@@ -284,24 +284,21 @@ export default function ProductFirstHomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-7 lg:pl-4">
-              <div className="relative">
+            <div className="lg:col-span-7 lg:pl-4 min-w-0 w-full">
+              <div className="relative w-full">
                 <div
-                  className="pointer-events-none absolute -inset-6 rounded-[2rem] opacity-60 blur-2xl"
+                  className="pointer-events-none absolute -inset-6 rounded-[2rem] opacity-70 blur-2xl"
                   aria-hidden
                   style={{
                     background:
-                      "radial-gradient(ellipse at 60% 40%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 70%)",
+                      "radial-gradient(ellipse at 60% 40%, color-mix(in srgb, var(--color-accent) 32%, transparent), transparent 70%)",
                   }}
                 />
                 <ProductShot
                   media={heroMedia}
-                  className="relative"
-                  placeholderTitle={pick({ zh: "管理后台预览", en: "Admin preview" })}
-                  placeholderHint={pick({
-                    zh: "配置 hero.media.url 放入产品截图",
-                    en: "Set hero.media.url for a product screenshot",
-                  })}
+                  className="relative w-full"
+                  polishedPlaceholder
+                  placeholderTitle={pick({ zh: "Inkless 管理界面", en: "Inkless admin" })}
                 />
               </div>
             </div>
@@ -310,16 +307,9 @@ export default function ProductFirstHomePage() {
       </section>
 
       {/* Showcase strip */}
-      <section className="border-b border-border bg-surface-alt/35 font-sans">
+      <section className="border-b border-border bg-surface-alt/40 font-sans">
         <ProductPageShell className="py-16 md:py-20">
-          <ShowcaseStrip
-            title={showcaseTitle}
-            items={showcaseItems}
-            emptyHint={pick({
-              zh: "在 home.showcase.items 配置截图 URL",
-              en: "Configure screenshot URLs in home.showcase.items",
-            })}
-          />
+          <ShowcaseStrip title={showcaseTitle} items={showcaseItems} />
         </ProductPageShell>
       </section>
 
