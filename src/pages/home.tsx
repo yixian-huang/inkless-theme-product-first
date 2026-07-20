@@ -12,6 +12,8 @@ import {
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
 import { resolveProductCtas } from "../chrome/resolveProductCtas";
+import ProductShot, { type MediaRef } from "../ui/ProductShot";
+import ShowcaseStrip from "../ui/ShowcaseStrip";
 import {
   btnPrimary,
   btnSecondary,
@@ -33,10 +35,22 @@ type ProductHomeConfig = {
     primaryCta?: { label?: Localized; href?: string };
     secondaryCta?: { label?: Localized; href?: string };
     badge?: Localized;
+    /** Primary product screenshot / illustration beside hero copy */
+    media?: MediaRef;
+  };
+  /** Optional multi-shot product gallery */
+  showcase?: {
+    title?: Localized;
+    items?: MediaRef[];
   };
   features?: {
     title?: Localized;
-    items?: Array<{ title?: Localized; description?: Localized; icon?: string }>;
+    items?: Array<{
+      title?: Localized;
+      description?: Localized;
+      icon?: string;
+      media?: MediaRef;
+    }>;
   };
   howItWorks?: {
     title?: Localized;
@@ -101,9 +115,6 @@ const PLACEHOLDER_STEPS = [
 
 const FEATURE_MARKS = ["◇", "▣", "◎"];
 
-/**
- * product-first home — polished software product landing.
- */
 export default function ProductFirstHomePage() {
   const { config } = useGlobalConfig();
   const { defaultTitle, defaultDescription, defaultOgImage } = useSEODefaults();
@@ -159,11 +170,18 @@ export default function ProductFirstHomePage() {
   const heroSubtitle = pick(homeCfg.hero?.subtitle, tagline || PRODUCT_BRAND.description);
   const heroEyebrow = pick(homeCfg.hero?.eyebrow, PRODUCT_BRAND.fullName);
   const heroBadge = pick(homeCfg.hero?.badge, "");
+  const heroMedia = homeCfg.hero?.media;
 
   const primaryLabel = pick(homeCfg.hero?.primaryCta?.label, ctas.primaryCtaLabel);
   const primaryHref = homeCfg.hero?.primaryCta?.href?.trim() || ctas.primaryCtaHref;
   const secondaryLabel = pick(homeCfg.hero?.secondaryCta?.label, ctas.secondaryCtaLabel);
   const secondaryHref = homeCfg.hero?.secondaryCta?.href?.trim() || ctas.secondaryCtaHref;
+
+  const showcaseTitle = pick(
+    homeCfg.showcase?.title,
+    pick({ zh: "产品界面", en: "Product interface" }),
+  );
+  const showcaseItems = homeCfg.showcase?.items;
 
   const featuresTitle = pick(homeCfg.features?.title, pick({ zh: "核心能力", en: "Capabilities" }));
   const featureItems =
@@ -198,16 +216,12 @@ export default function ProductFirstHomePage() {
       <SeoHead
         title={pageTitle}
         description={defaultDescription || heroSubtitle}
-        ogImage={defaultOgImage}
+        ogImage={defaultOgImage || heroMedia?.url}
       />
 
-      {/* Hero */}
+      {/* Hero: copy + product shot */}
       <section className="relative overflow-hidden border-b border-border font-sans">
-        {/* Atmosphere: soft grid + teal glow — decorative only */}
-        <div
-          className="pointer-events-none absolute inset-0 bg-surface"
-          aria-hidden
-        />
+        <div className="pointer-events-none absolute inset-0 bg-surface" aria-hidden />
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.45]"
           aria-hidden
@@ -228,46 +242,84 @@ export default function ProductFirstHomePage() {
           }}
         />
 
-        <ProductPageShell className="relative py-20 md:py-28">
-          <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center gap-3 mb-5">
-              {heroEyebrow ? (
-                <span className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wide text-accent">
-                  {heroEyebrow}
-                </span>
+        <ProductPageShell className="relative py-16 md:py-24 lg:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+            <div className="lg:col-span-5 max-w-xl">
+              <div className="flex flex-wrap items-center gap-3 mb-5">
+                {heroEyebrow ? (
+                  <span className="inline-flex items-center rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wide text-accent">
+                    {heroEyebrow}
+                  </span>
+                ) : null}
+                {heroBadge ? (
+                  <span className="inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-surface-alt border border-border text-on-surface-muted">
+                    {heroBadge}
+                  </span>
+                ) : null}
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl md:text-[3.1rem] font-semibold tracking-tight text-on-surface leading-[1.12] text-balance">
+                {heroTitle}
+              </h1>
+              {heroSubtitle ? (
+                <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed text-pretty">
+                  {heroSubtitle}
+                </p>
               ) : null}
-              {heroBadge ? (
-                <span className="inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-surface-alt border border-border text-on-surface-muted">
-                  {heroBadge}
-                </span>
-              ) : null}
+
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <a href={primaryHref} className={btnPrimary}>
+                  {primaryLabel}
+                  <span aria-hidden className="opacity-80">
+                    →
+                  </span>
+                </a>
+                <a href={secondaryHref} className={btnSecondary}>
+                  {secondaryLabel}
+                </a>
+                <Link to="/features" className={`${btnGhost} px-2 py-2`}>
+                  Features
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-[3.25rem] font-semibold tracking-tight text-on-surface leading-[1.12] text-balance">
-              {heroTitle}
-            </h1>
-            {heroSubtitle ? (
-              <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed max-w-2xl text-pretty">
-                {heroSubtitle}
-              </p>
-            ) : null}
-
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a href={primaryHref} className={btnPrimary}>
-                {primaryLabel}
-                <span aria-hidden className="opacity-80">
-                  →
-                </span>
-              </a>
-              <a href={secondaryHref} className={btnSecondary}>
-                {secondaryLabel}
-              </a>
-              <Link to="/features" className={`${btnGhost} px-2 py-2`}>
-                Features
-                <span aria-hidden>→</span>
-              </Link>
+            <div className="lg:col-span-7 lg:pl-4">
+              <div className="relative">
+                <div
+                  className="pointer-events-none absolute -inset-6 rounded-[2rem] opacity-60 blur-2xl"
+                  aria-hidden
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 60% 40%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 70%)",
+                  }}
+                />
+                <ProductShot
+                  media={heroMedia}
+                  className="relative"
+                  placeholderTitle={pick({ zh: "管理后台预览", en: "Admin preview" })}
+                  placeholderHint={pick({
+                    zh: "配置 hero.media.url 放入产品截图",
+                    en: "Set hero.media.url for a product screenshot",
+                  })}
+                />
+              </div>
             </div>
           </div>
+        </ProductPageShell>
+      </section>
+
+      {/* Showcase strip */}
+      <section className="border-b border-border bg-surface-alt/35 font-sans">
+        <ProductPageShell className="py-16 md:py-20">
+          <ShowcaseStrip
+            title={showcaseTitle}
+            items={showcaseItems}
+            emptyHint={pick({
+              zh: "在 home.showcase.items 配置截图 URL",
+              en: "Configure screenshot URLs in home.showcase.items",
+            })}
+          />
         </ProductPageShell>
       </section>
 
@@ -287,9 +339,20 @@ export default function ProductFirstHomePage() {
                   }}
                   aria-hidden
                 />
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent text-lg">
-                  <span aria-hidden>{FEATURE_MARKS[i % FEATURE_MARKS.length]}</span>
-                </div>
+                {item.media?.url ? (
+                  <div className="mb-4 -mx-1 overflow-hidden rounded-xl border border-border/70 aspect-[16/10] bg-surface-alt">
+                    <img
+                      src={item.media.url}
+                      alt={item.media.alt || pick(item.title, `Feature ${i + 1}`)}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent text-lg">
+                    <span aria-hidden>{item.icon || FEATURE_MARKS[i % FEATURE_MARKS.length]}</span>
+                  </div>
+                )}
                 <h3 className="text-base font-semibold tracking-tight text-on-surface">
                   {pick(item.title, `Feature ${i + 1}`)}
                 </h3>
