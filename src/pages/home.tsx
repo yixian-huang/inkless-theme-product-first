@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   PRODUCT_BRAND,
@@ -111,14 +112,34 @@ export default function ProductFirstHomePage() {
   };
 
   const siteConfig = (config as any)?.siteConfig ?? SITE_CONFIG_GLOBAL_DEFAULT;
-  // Home product schema may live under published page content when host passes it;
-  // bootstrap global is identity — page content is often loaded by host page wrappers.
-  // For theme-owned home, also accept config.home / config.productHome if present.
-  const homeCfg: ProductHomeConfig =
-    (config as any)?.home ??
-    (config as any)?.productHome ??
-    (config as any)?.pageConfig ??
-    {};
+  // Load product home schema from host public content (content_documents.home).
+  const [homeCfg, setHomeCfg] = useState<ProductHomeConfig>(
+    () =>
+      ((config as any)?.home ??
+        (config as any)?.productHome ??
+        (config as any)?.pageConfig ??
+        {}) as ProductHomeConfig,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/public/content/home");
+        if (!res.ok) return;
+        const data = await res.json();
+        const cfg = (data?.config ?? data) as ProductHomeConfig;
+        if (!cancelled && cfg && typeof cfg === "object") {
+          setHomeCfg(cfg);
+        }
+      } catch {
+        /* keep placeholder / bootstrap config */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const siteName = pick(siteConfig?.identity?.name, PRODUCT_BRAND.name);
   const tagline = pick(siteConfig?.identity?.tagline, PRODUCT_BRAND.description);
