@@ -278,7 +278,7 @@ export default function ProductFirstHomePage() {
                   {secondaryLabel}
                 </a>
                 <Link to="/features" className={`${btnGhost} px-2 py-2`}>
-                  Features
+                  {pick({ zh: "能力", en: "Features" })}
                   <span aria-hidden>→</span>
                 </Link>
               </div>
