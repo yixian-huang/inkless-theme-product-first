@@ -6,7 +6,7 @@ Inkless **product-first** theme: software product landing (hero, capabilities, i
 |--|--|
 | Theme id | `product-first` |
 | Contract | `1` (`@inkless/theme-host`) |
-| Package version | `0.1.6` |
+| Package version | `0.1.7` |
 | Layout | `contentProfile: wide`, `maxWidth: 72rem` |
 | Docs | External URL only (`docsUrl` theme setting) |
 

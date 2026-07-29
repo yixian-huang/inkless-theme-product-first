@@ -57,6 +57,8 @@ type ProductHomeConfig = {
       description?: Localized;
       icon?: string;
       media?: MediaRef;
+      /** Optional in-app or external link for the card */
+      href?: string;
     }>;
   };
   howItWorks?: {
@@ -448,8 +450,9 @@ export default function ProductFirstHomePage() {
             {featureItems.map((item, i) => {
               const title = pick(item.title, `Feature ${i + 1}`);
               const body = scrubVisitorCopy(pick(item.description));
-              return (
-                <article key={`${title}-${i}`} className={card}>
+              const href = typeof item.href === "string" ? item.href.trim() : "";
+              const cardInner = (
+                <>
                   <div
                     className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
                     style={{
@@ -478,8 +481,30 @@ export default function ProductFirstHomePage() {
                       <span aria-hidden>{item.icon || FEATURE_MARKS[i % FEATURE_MARKS.length]}</span>
                     </div>
                   )}
-                  <h3 className="text-base font-semibold tracking-tight text-on-surface">{title}</h3>
+                  <h3 className="text-base font-semibold tracking-tight text-on-surface group-hover/card:text-accent transition-colors">
+                    {title}
+                  </h3>
                   <p className="mt-2 text-sm text-on-surface-muted leading-relaxed">{body}</p>
+                  {href ? (
+                    <p className={`mt-4 text-sm font-medium ${textAccentSignal}`}>
+                      {pick({ zh: "了解更多 →", en: "Learn more →" })}
+                    </p>
+                  ) : null}
+                </>
+              );
+              const cardClass = href
+                ? `${card} group/card cursor-pointer focus-within:ring-2 focus-within:ring-accent/40`
+                : card;
+              if (href) {
+                return (
+                  <ActionLink key={`${title}-${i}`} href={href} className={cardClass}>
+                    {cardInner}
+                  </ActionLink>
+                );
+              }
+              return (
+                <article key={`${title}-${i}`} className={cardClass}>
+                  {cardInner}
                 </article>
               );
             })}
