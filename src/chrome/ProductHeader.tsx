@@ -1,45 +1,94 @@
 import {
   BaseSiteHeader,
   BrandMark,
+  pickLocaleValue,
   useBranding,
   useContentMaxWidth,
   useHeaderSettings,
+  useLocaleMode,
   useThemeSettings,
   type HeaderChromeProps,
 } from "@inkless/theme-host";
-import { resolveProductCtas } from "./resolveProductCtas";
+import { isSameHref, resolveProductCtas } from "./resolveProductCtas";
 import { btnHeaderCta, linkQuiet } from "../ui/classes";
 
 function ProductHeaderCtas() {
   const settings = useThemeSettings() as Record<string, unknown>;
   const ctas = resolveProductCtas(settings);
+  const { localeMode, defaultLocale, currentLocale } = useLocaleMode();
+
+  const pick = (value: { zh?: string; en?: string } | string, fallback = "") => {
+    if (typeof value === "string") return value;
+    return (
+      pickLocaleValue({
+        value,
+        mode: localeMode,
+        defaultLocale,
+        currentLocale,
+      }) || fallback
+    );
+  };
+
+  /** Localize stock English default so zh pages don't show "Get started" in chrome. */
+  const primaryLabel =
+    ctas.primaryCtaLabel === "Get started"
+      ? pick({ zh: "快速开始", en: "Get started" })
+      : ctas.primaryCtaLabel;
+
+  const docsLabel = pick({ zh: "文档", en: "Docs" });
+  const showGithub =
+    Boolean(ctas.githubUrl) && !isSameHref(ctas.primaryCtaHref, ctas.githubUrl);
+  const showDocs =
+    Boolean(ctas.docsUrl) && !isSameHref(ctas.primaryCtaHref, ctas.docsUrl);
+
+  const primary = (
+    <a href={ctas.primaryCtaHref} className={btnHeaderCta}>
+      {primaryLabel}
+    </a>
+  );
 
   return (
-    <div className="hidden md:flex items-center gap-1 shrink-0">
-      {ctas.docsUrl ? (
-        <a
-          href={ctas.docsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${linkQuiet} px-2.5 py-1.5 rounded-md hover:bg-surface-alt`}
-        >
-          Docs
-        </a>
-      ) : null}
-      {ctas.githubUrl ? (
-        <a
-          href={ctas.githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${linkQuiet} px-2.5 py-1.5 rounded-md hover:bg-surface-alt`}
-        >
-          GitHub
-        </a>
-      ) : null}
-      <a href={ctas.primaryCtaHref} className={`${btnHeaderCta} ml-1.5`}>
-        {ctas.primaryCtaLabel}
-      </a>
-    </div>
+    <>
+      {/* Mobile: always-visible conversion rail (adapt) */}
+      <div className="flex md:hidden items-center gap-1 shrink-0">
+        {showGithub ? (
+          <a
+            href={ctas.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${linkQuiet} px-2 py-1.5 rounded-md hover:bg-surface-alt`}
+          >
+            GitHub
+          </a>
+        ) : null}
+        <span className="ml-0.5">{primary}</span>
+      </div>
+
+      {/* Desktop utilities */}
+      <div className="hidden md:flex items-center gap-1 shrink-0">
+        {showDocs ? (
+          <a
+            href={ctas.docsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${linkQuiet} px-2.5 py-1.5 rounded-md hover:bg-surface-alt`}
+          >
+            {docsLabel}
+          </a>
+        ) : null}
+        {showGithub ? (
+          <a
+            href={ctas.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${linkQuiet} px-2.5 py-1.5 rounded-md hover:bg-surface-alt`}
+          >
+            GitHub
+          </a>
+        ) : null}
+        <span className="ml-1.5">{primary}</span>
+      </div>
+    </>
   );
 }
 
@@ -68,7 +117,7 @@ export default function ProductHeader({ config }: HeaderChromeProps) {
           brandMode={mode}
           hideDefaultLogo
           showLabel
-          textClassName="text-[15px] font-sans font-semibold tracking-tight text-on-surface"
+          textClassName="text-sm font-sans font-semibold tracking-tight text-on-surface"
           logoClassName="h-7 w-auto"
         />
       }

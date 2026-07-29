@@ -35,7 +35,7 @@ export default function MediaFrame({
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" aria-hidden />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" aria-hidden />
           <div className="ml-2 flex-1 min-w-0">
-            <div className="mx-auto max-w-[14rem] truncate rounded-md bg-surface border border-border/70 px-2.5 py-1 text-center text-[10px] text-on-surface-muted font-medium tracking-wide">
+            <div className="mx-auto max-w-[14rem] truncate rounded-md bg-surface border border-border/70 px-2.5 py-1 text-center text-xs text-on-surface-muted font-medium tracking-wide">
               inkless.run
             </div>
           </div>

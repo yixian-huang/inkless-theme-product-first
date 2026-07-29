@@ -3,3 +3,12 @@ dist/
 *.log
 .DS_Store
 coverage/
+
+# Local browser / Impeccable review artifacts (do not ship)
+.playwright-mcp/
+*.png
+assessment-*.png
+assess-*.png
+critique-fix-*.png
+design-review-*.png
+impeccable-home-*.png

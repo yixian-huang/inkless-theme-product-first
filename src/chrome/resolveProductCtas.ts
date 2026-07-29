@@ -29,6 +29,19 @@ function pickSetting(settings: Record<string, unknown>, key: keyof typeof DEFAUL
   return DEFAULTS[key];
 }
 
+/** Normalize href for equality checks (trim, strip trailing slash, casefold). */
+export function normalizeHref(href: string): string {
+  return href.trim().replace(/\/+$/, "").toLowerCase();
+}
+
+/** True when two hrefs point at the same destination for CTA dedupe. */
+export function isSameHref(a: string, b: string): boolean {
+  const left = a?.trim() ?? "";
+  const right = b?.trim() ?? "";
+  if (!left || !right) return false;
+  return normalizeHref(left) === normalizeHref(right);
+}
+
 /**
  * Resolve CTA / external links from theme settings with safe defaults.
  * Accepts flat keys, `header.*` keys, or nested `{ header: { docsUrl } }` config.

@@ -1,0 +1,437 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-29T05:16:04Z",
+  "title": "Design System: Product First",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Near-Black Product",
+        "canonical": "#0f172a",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#f8fafc"
+        ]
+      },
+      "primary-dark": {
+        "role": "primary",
+        "displayName": "Ink Black",
+        "canonical": "#020617",
+        "tonalRamp": [
+          "#020617",
+          "#0b1220",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Brand Blue",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#bfdbfe",
+          "#dbeafe"
+        ]
+      },
+      "accent-hover": {
+        "role": "secondary",
+        "displayName": "Brand Blue Deep",
+        "canonical": "#1d4ed8",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#93c5fd",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0f172a",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f1f5f9",
+          "#f8fafc",
+          "#ffffff"
+        ]
+      },
+      "surface-alt": {
+        "role": "neutral",
+        "displayName": "Surface Alt",
+        "canonical": "#f8fafc",
+        "tonalRamp": [
+          "#0f172a",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f1f5f9",
+          "#f8fafc",
+          "#ffffff"
+        ]
+      },
+      "on-primary": {
+        "role": "neutral",
+        "displayName": "On Primary",
+        "canonical": "#f8fafc",
+        "tonalRamp": [
+          "#0f172a",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f1f5f9",
+          "#f8fafc",
+          "#ffffff"
+        ]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "On Surface",
+        "canonical": "#0f172a",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "on-surface-muted": {
+        "role": "neutral",
+        "displayName": "On Surface Muted",
+        "canonical": "#64748b",
+        "tonalRamp": [
+          "#0f172a",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "canonical": "#e2e8f0",
+        "tonalRamp": [
+          "#0f172a",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e2e8f0",
+          "#f1f5f9",
+          "#ffffff"
+        ]
+      },
+      "terminal-chrome": {
+        "role": "neutral",
+        "displayName": "Terminal Chrome",
+        "canonical": "#0a0f1a",
+        "tonalRamp": [
+          "#020617",
+          "#0a0f1a",
+          "#0c1222",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0"
+        ]
+      },
+      "terminal-body": {
+        "role": "neutral",
+        "displayName": "Terminal Body",
+        "canonical": "#0c1222",
+        "tonalRamp": [
+          "#020617",
+          "#0a0f1a",
+          "#0c1222",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero H1 only — product name / primary claim."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles and inverted CTA band titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles, feature titles, brand label, footer site name."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Card descriptions, contact rows, general marketing copy."
+      },
+      "body-lg": {
+        "displayName": "Body Large",
+        "purpose": "Hero subtitle and section leads."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase section eyebrows and micro labels."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Install / terminal code blocks only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-rest",
+        "value": "0 1px 2px 0 color-mix(in srgb, #0f172a 3%, transparent)",
+        "purpose": "Default capability and contact cards at rest."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 10px 15px -3px color-mix(in srgb, #2563eb 10%, transparent)",
+        "purpose": "Card hover lift with accent-tinted glow."
+      },
+      {
+        "name": "media-elevated",
+        "value": "0 25px 50px -12px color-mix(in srgb, #0f172a 10%, transparent)",
+        "purpose": "Primary product MediaFrame depth."
+      },
+      {
+        "name": "media-quiet",
+        "value": "0 4px 6px -1px color-mix(in srgb, #0f172a 5%, transparent)",
+        "purpose": "Secondary showcase frames."
+      },
+      {
+        "name": "terminal",
+        "value": "0 20px 25px -5px color-mix(in srgb, #0f172a 5%, transparent)",
+        "purpose": "Install terminal outer container."
+      },
+      {
+        "name": "step-badge",
+        "value": "0 4px 6px -1px color-mix(in srgb, #0f172a 20%, transparent)",
+        "purpose": "How-it-works numbered marks on primary fill."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "200ms",
+        "purpose": "Default button/link/card color and shadow transitions."
+      },
+      {
+        "name": "ease-card",
+        "value": "300ms",
+        "purpose": "Card hover translate and accent hairline opacity."
+      },
+      {
+        "name": "press-scale",
+        "value": "scale(0.98)",
+        "purpose": "Primary/secondary button active press."
+      },
+      {
+        "name": "cta-hover-scale",
+        "value": "scale(1.02)",
+        "purpose": "Inverted-band primary CTA hover."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ],
+    "presets": [
+      {
+        "id": "default",
+        "name": "Ink Product",
+        "note": "Default light floor — near-black primary + brand blue accent."
+      },
+      {
+        "id": "midnight",
+        "name": "Midnight",
+        "note": "Dark inversion of the same structure; tokens flip surface/on-surface roles."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid near-black CTA for Get started / primary product action.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Get started <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; border: none; border-radius: 0.5rem; background: #0f172a; color: #f8fafc; padding: 0.625rem 1.25rem; font: 600 0.875rem/1.25 ui-sans-serif, system-ui, sans-serif; box-shadow: 0 1px 2px color-mix(in srgb, #0f172a 15%, transparent); cursor: pointer; transition: background 200ms, box-shadow 200ms, transform 200ms; white-space: nowrap; } .ds-btn-primary:hover { background: #020617; box-shadow: 0 4px 6px color-mix(in srgb, #0f172a 15%, transparent); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined surface button for secondary paths (Docs, back home).",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Docs ↗</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; background: #ffffff; color: #0f172a; padding: 0.625rem 1.25rem; font: 600 0.875rem/1.25 ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: background 200ms, border-color 200ms, transform 200ms; } .ds-btn-secondary:hover { background: #f8fafc; border-color: color-mix(in srgb, #64748b 30%, transparent); } .ds-btn-secondary:active { transform: scale(0.98); } .ds-btn-secondary:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary text path without chrome.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">Features <span aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 0.25rem; color: #64748b; font: 500 0.875rem/1.25 ui-sans-serif, system-ui, sans-serif; text-decoration: none; padding: 0.5rem; transition: color 200ms; } .ds-btn-ghost:hover { color: #0f172a; } .ds-btn-ghost:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; border-radius: 0.375rem; }"
+    },
+    {
+      "name": "Header CTA",
+      "kind": "button",
+      "refersTo": "button-header-cta",
+      "description": "Compact primary action in sticky header utilities.",
+      "html": "<a class=\"ds-btn-header\" href=\"#install\">Get started</a>",
+      "css": ".ds-btn-header { display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; background: #0f172a; color: #f8fafc; padding: 0.375rem 0.875rem; font: 600 0.875rem/1.25 ui-sans-serif, system-ui, sans-serif; text-decoration: none; box-shadow: 0 1px 2px color-mix(in srgb, #0f172a 12%, transparent); transition: background 200ms, transform 200ms; } .ds-btn-header:hover { background: #020617; } .ds-btn-header:active { transform: scale(0.98); } .ds-btn-header:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }"
+    },
+    {
+      "name": "Capability Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Feature/capability card with icon well and hover lift.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-icon\" aria-hidden=\"true\">◇</div><h3 class=\"ds-card-title\">Theme-driven</h3><p class=\"ds-card-body\">Product, blog, or corporate presentation is owned by themes—not hard-coded shells.</p></article>",
+      "css": ".ds-card { position: relative; border-radius: 1rem; border: 1px solid color-mix(in srgb, #e2e8f0 80%, transparent); background: #ffffff; padding: 1.5rem; box-shadow: 0 1px 2px color-mix(in srgb, #0f172a 3%, transparent); transition: transform 300ms, border-color 300ms, box-shadow 300ms; font-family: ui-sans-serif, system-ui, sans-serif; } .ds-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, #2563eb 35%, transparent); box-shadow: 0 10px 15px -3px color-mix(in srgb, #2563eb 10%, transparent); } .ds-card-icon { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; margin-bottom: 1rem; border-radius: 0.75rem; background: color-mix(in srgb, #2563eb 10%, transparent); color: #2563eb; font-size: 1.125rem; } .ds-card-title { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; color: #0f172a; } .ds-card-body { margin: 0.5rem 0 0; font-size: 0.875rem; line-height: 1.625; color: #64748b; }"
+    },
+    {
+      "name": "Eyebrow Chip",
+      "kind": "chip",
+      "refersTo": "chip-eyebrow",
+      "description": "Hero product eyebrow pill in scarce brand blue.",
+      "html": "<span class=\"ds-chip-eyebrow\">Inkless CMS</span>",
+      "css": ".ds-chip-eyebrow { display: inline-flex; align-items: center; border-radius: 9999px; border: 1px solid color-mix(in srgb, #2563eb 20%, transparent); background: color-mix(in srgb, #2563eb 10%, transparent); color: #2563eb; padding: 0.25rem 0.75rem; font: 600 0.75rem/1.25 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.02em; white-space: nowrap; }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Uppercase accent eyebrow above section headlines.",
+      "html": "<p class=\"ds-section-label\">Product</p><h2 class=\"ds-section-title\">Capabilities</h2>",
+      "css": ".ds-section-label { margin: 0; font: 600 0.75rem/1.25 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #2563eb; } .ds-section-title { margin: 0.75rem 0 0; font: 600 clamp(1.875rem, 3vw, 2.25rem)/1.2 ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.025em; color: #0f172a; text-wrap: balance; }"
+    },
+    {
+      "name": "Product Media Frame",
+      "kind": "custom",
+      "refersTo": "media-frame",
+      "description": "Signature browser chrome around product screenshots.",
+      "html": "<figure class=\"ds-media\"><div class=\"ds-media-shell\"><div class=\"ds-media-bar\"><span class=\"ds-dot ds-dot-r\"></span><span class=\"ds-dot ds-dot-y\"></span><span class=\"ds-dot ds-dot-g\"></span><div class=\"ds-media-url\">inkless.run</div></div><div class=\"ds-media-stage\"><div class=\"ds-media-mock\">Product UI</div></div></div></figure>",
+      "css": ".ds-media { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; } .ds-media-shell { overflow: hidden; border-radius: 1rem; border: 1px solid color-mix(in srgb, #e2e8f0 80%, transparent); background: #ffffff; box-shadow: 0 25px 50px -12px color-mix(in srgb, #0f172a 10%, transparent), 0 0 0 1px rgba(0,0,0,0.04); } .ds-media-bar { display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid color-mix(in srgb, #e2e8f0 80%, transparent); background: color-mix(in srgb, #f8fafc 90%, transparent); padding: 0.625rem 0.875rem; } .ds-dot { width: 0.625rem; height: 0.625rem; border-radius: 9999px; } .ds-dot-r { background: #ff5f57; } .ds-dot-y { background: #febc2e; } .ds-dot-g { background: #28c840; } .ds-media-url { flex: 1; max-width: 14rem; margin: 0 auto; border-radius: 0.375rem; border: 1px solid color-mix(in srgb, #e2e8f0 70%, transparent); background: #ffffff; padding: 0.25rem 0.625rem; text-align: center; font: 500 10px/1.2 ui-sans-serif, system-ui, sans-serif; color: #64748b; letter-spacing: 0.04em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ds-media-stage { position: relative; aspect-ratio: 16 / 10; background: color-mix(in srgb, #f8fafc 40%, transparent); overflow: hidden; } .ds-media-mock { display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 45%, color-mix(in srgb, #2563eb 8%, #eff6ff) 100%); color: #334155; font: 600 0.75rem/1 ui-sans-serif, system-ui, sans-serif; }"
+    },
+    {
+      "name": "Install Terminal",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Dark install window with traffic lights and mono code.",
+      "html": "<div class=\"ds-terminal\"><div class=\"ds-terminal-bar\"><span class=\"ds-dot ds-dot-r\"></span><span class=\"ds-dot ds-dot-y\"></span><span class=\"ds-dot ds-dot-g\"></span><span class=\"ds-terminal-label\">terminal</span></div><pre class=\"ds-terminal-body\"><code># clone &amp; boot\nmake dev-up</code></pre></div>",
+      "css": ".ds-terminal { overflow: hidden; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 20px 25px -5px color-mix(in srgb, #0f172a 5%, transparent); font-family: ui-sans-serif, system-ui, sans-serif; } .ds-terminal-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #0a0f1a; border-bottom: 1px solid rgba(255,255,255,0.1); } .ds-dot { width: 0.625rem; height: 0.625rem; border-radius: 9999px; } .ds-dot-r { background: color-mix(in srgb, #f87171 80%, transparent); } .ds-dot-y { background: color-mix(in srgb, #fbbf24 80%, transparent); } .ds-dot-g { background: color-mix(in srgb, #34d399 80%, transparent); } .ds-terminal-label { margin-left: 0.75rem; font: 500 11px/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.04em; color: #94a3b8; } .ds-terminal-body { margin: 0; padding: 1.25rem 1.5rem; background: #0c1222; color: #f1f5f9; font: 400 0.8125rem/1.625 ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace; overflow-x: auto; box-shadow: inset 0 1px 0 rgba(0,0,0,0.2); } .ds-terminal-body code { font: inherit; color: inherit; }"
+    },
+    {
+      "name": "Quiet Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Header utility link for Docs / GitHub.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Docs</a><a class=\"ds-nav-link\" href=\"#\">GitHub</a></nav>",
+      "css": ".ds-nav { display: inline-flex; align-items: center; gap: 0.25rem; font-family: ui-sans-serif, system-ui, sans-serif; } .ds-nav-link { color: #64748b; font: 500 0.875rem/1.25 ui-sans-serif, system-ui, sans-serif; text-decoration: none; padding: 0.375rem 0.625rem; border-radius: 0.375rem; transition: color 200ms, background 200ms; } .ds-nav-link:hover { color: #0f172a; background: #f8fafc; } .ds-nav-link:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Product Showcase Floor",
+    "overview": "This system is a clean, wide product floor: the software itself is the exhibit. Chrome, type, and color step back so product shots, capability cards, and install CTAs can carry conviction. Surfaces feel like a polished showroom floor—ample width (72rem), calm neutrals, and deliberate rhythm—never a blog stream or an agency storyboard.\n\nThe atmosphere is evidence-first with light tech texture. Real (or CSS-mocked) product UI is the proof. Hero may use a faint grid and soft accent bloom; subsequent bands stay quieter, alternating surface / surface-alt with hairline borders. Personality is confident and product-forward: solid ink CTAs, cards that lift on hover, media frames that float as the visual anchor.\n\nDefault tokens ship as Near-Black Product + Brand Blue—slate-ink primaries aligned with the Inkless mark accent (#2563eb), explicitly not consulting teal. System UI sans is the house face; mono appears only in install/terminal craft. A Midnight token preset inverts the floor for dark product sites without changing structure or components.",
+    "keyCharacteristics": [
+      "Product-as-proof: screenshots and UI mocks lead; illustration does not replace product truth",
+      "Wide, sectioned landing floor with sticky product chrome",
+      "Ink primary + scarce brand-blue signal; hybrid flat/tonal base with lift on media and hover",
+      "System sans hierarchy; mono reserved for install/terminal",
+      "Signature craft: browser MediaFrame, staggered showcase strip, terminal install block"
+    ],
+    "rules": [
+      {
+        "name": "The Signal Blue Rule",
+        "body": "Brand blue is a signal, not a surface. Use it for labels, sparse fills (accent/10), focus rings, and small marks—never as a full-viewport background or dominant card fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Consulting Teal Rule",
+        "body": "Keep primary in ink slate and accent in mark blue. Do not re-skin the system toward teal, warm agency orange, or purple SaaS clichés.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Stack Rule",
+        "body": "Stay on system sans + system mono. Do not introduce decorative webfonts for “premium” marketing polish unless the host token presets explicitly override.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono is Install Rule",
+        "body": "Monospace appears in the terminal/install craft—not in nav, cards, or hero headlines.",
+        "section": "typography"
+      },
+      {
+        "name": "The Wide Floor Rule",
+        "body": "Prefer the 72rem product measure. Do not collapse the system to a narrow blog column for primary landing sections.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces rest flat or tonal. Borrow elevation for product media and interactive hover—not for every box on the page.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Soft Product Radius Rule",
+        "body": "Prefer lg–2xl radii for marketing surfaces. Avoid 0-radius “engineering brutalism” and oversized 2rem+ blob cards.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do lead key sections with product evidence (real shot or polished UI mock inside MediaFrame).",
+      "Do keep CTAs scannable: one solid primary path, secondary outline/ghost, optional Docs/GitHub as quiet utilities.",
+      "Do alternate surface / surface-alt bands with hairline borders for rhythm without heavy shadows.",
+      "Do preserve bilingual (zh/en) layout resilience: allow wrap, avoid fixed English-only widths on labels.",
+      "Do use brand blue sparingly as signal (labels, icons, focus, small fills).",
+      "Do respect host tokens: colors/fonts/layout may be overridden in admin—compose with CSS variables / semantic roles when available."
+    ],
+    "donts": [
+      "Don't recolor the system toward consulting teal, warm agency orange, or generic purple SaaS gradients as primary identity.",
+      "Don't replace the hero/product stage with decorative illustration as the main visual proof.",
+      "Don't restructure the home spine into a blog-style long-form or post-list architecture.",
+      "Don't flood the viewport with accent blue backgrounds; blue stays scarce.",
+      "Don't invent testimonials, customer logos, metrics, or docs content the host did not supply.",
+      "Don't introduce decorative display webfonts or drop system mono from install craft without an explicit token-preset decision.",
+      "Don't apply dashboard-dense spacing or sharp 0-radius chrome to this marketing floor."
+    ]
+  }
+}
