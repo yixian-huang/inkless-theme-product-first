@@ -5,7 +5,7 @@ describe("resolveProductCtas", () => {
   it("uses package defaults when settings empty", () => {
     const c = resolveProductCtas({});
     expect(c.githubUrl).toContain("github.com");
-    expect(c.primaryCtaHref).toBe("#install");
+    expect(c.primaryCtaHref).toBe("/get-started");
     expect(c.docsUrl).toBe("");
   });
 

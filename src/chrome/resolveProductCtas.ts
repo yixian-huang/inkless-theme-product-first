@@ -11,7 +11,7 @@ const DEFAULTS = {
   docsUrl: "",
   githubUrl: "https://github.com/yixian-huang/inkless",
   primaryCtaLabel: "Get started",
-  primaryCtaHref: "#install",
+  primaryCtaHref: "/get-started",
   secondaryCtaLabel: "GitHub",
   secondaryCtaHref: "https://github.com/yixian-huang/inkless",
 };

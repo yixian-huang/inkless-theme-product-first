@@ -247,9 +247,9 @@ export default function ProductFirstFeaturesPage() {
               })}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#install" className={btnPrimary}>
+              <Link to="/get-started" className={btnPrimary}>
                 {pick({ zh: "快速开始", en: "Get started" })}
-              </a>
+              </Link>
               {ctas.docsUrl ? (
                 <a
                   href={ctas.docsUrl}

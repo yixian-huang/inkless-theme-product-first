@@ -57,10 +57,10 @@ export const productFirstTheme: ThemePlugin = {
     id: PRODUCT_FIRST_THEME_ID,
     name: "Product First",
     nameZh: "产品优先",
-    description: "Software product landing: hero, features, install CTA, optional changelog",
-    descriptionZh: "软件产品介绍站：主视觉、能力、安装引导、可选更新日志",
+    description: "Software product landing: hero, features, get-started, use cases, agents guide",
+    descriptionZh: "软件产品介绍站：主视觉、能力、上手、用例、Agent 导览",
     author: "Inkless CMS",
-    version: "0.1.4",
+    version: "0.1.6",
     type: "theme",
     preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
     tags: ["product", "landing", "oss"],
@@ -111,7 +111,7 @@ export const productFirstTheme: ThemePlugin = {
           type: "text",
           label: "Primary CTA href",
           labelZh: "主 CTA 链接",
-          defaultValue: "#install",
+          defaultValue: "/get-started",
         },
         {
           name: "showRssLink",
@@ -189,6 +189,45 @@ export const productFirstTheme: ThemePlugin = {
       },
     },
     {
+      slug: "get-started",
+      renderMode: "hardcoded",
+      lazyComponent: () => import("./pages/get-started"),
+      contentKey: "get-started",
+      nav: {
+        label: "Get started",
+        labelZh: "上手",
+        order: 2,
+        showInHeader: true,
+        showInFooter: true,
+      },
+    },
+    {
+      slug: "use-cases",
+      renderMode: "hardcoded",
+      lazyComponent: () => import("./pages/use-cases"),
+      contentKey: "use-cases",
+      nav: {
+        label: "Use cases",
+        labelZh: "用例",
+        order: 3,
+        showInHeader: true,
+        showInFooter: true,
+      },
+    },
+    {
+      slug: "agents",
+      renderMode: "hardcoded",
+      lazyComponent: () => import("./pages/agents"),
+      contentKey: "agents",
+      nav: {
+        label: "For agents",
+        labelZh: "面向 Agent",
+        order: 4,
+        showInHeader: true,
+        showInFooter: true,
+      },
+    },
+    {
       slug: "contact",
       renderMode: "hardcoded",
       lazyComponent: () => import("./pages/contact"),
@@ -212,6 +251,9 @@ export const productFirstTheme: ThemePlugin = {
 export { resolveProductCtas } from "./chrome/resolveProductCtas";
 export { default as ProductFirstHomePage } from "./pages/home";
 export { default as ProductFirstFeaturesPage } from "./pages/features";
+export { default as ProductFirstGetStartedPage } from "./pages/get-started";
+export { default as ProductFirstUseCasesPage } from "./pages/use-cases";
+export { default as ProductFirstAgentsPage } from "./pages/agents";
 export { default as ProductFirstContactPage } from "./pages/contact";
 export { default as ProductHeader } from "./chrome/ProductHeader";
 export { default as ProductFooter } from "./chrome/ProductFooter";
@@ -219,3 +261,7 @@ export { default as ProductPageShell } from "./shell/ProductPageShell";
 export { default as MediaFrame } from "./ui/MediaFrame";
 export { default as ProductShot } from "./ui/ProductShot";
 export { default as ShowcaseStrip } from "./ui/ShowcaseStrip";
+export { default as PageHero } from "./ui/PageHero";
+export { default as BottomCtaBand } from "./ui/BottomCtaBand";
+export { default as InstallTerminal } from "./ui/InstallTerminal";
+export { default as ActionLink } from "./ui/ActionLink";

@@ -41,6 +41,9 @@ It provides hard-coded product pages (home, features, contact), product-oriented
 |------|------|
 | `/` | Product landing (hero, showcase, capabilities, how-it-works, install, bottom CTA) |
 | `/features` | Capability catalog aligned with shipped product narrative |
+| `/get-started` | First-success path (steps, install craft, checklist) — class C |
+| `/use-cases` | Scenario map for product / blog / team / agents — class C |
+| `/agents` | Agent collaboration principles + CLI craft — class C |
 | `/contact` | Contact / community links from branding and theme settings |
 
 **Chrome & system:** sticky product header with Docs/GitHub/primary CTA utilities; minimal footer; layout `contentProfile: wide`, `maxWidth: 72rem`; default + Midnight token presets; shared UI primitives (buttons, cards, product shot, showcase strip, media frame).
@@ -49,7 +52,7 @@ It provides hard-coded product pages (home, features, contact), product-oriented
 
 - Theme id `product-first`; host contract version `1`; keep lockstep with host `THEME_CONTRACT_VERSION` / `inkless.theme.json`.
 - Do not bundle React; use host peer dependencies and host APIs.
-- Preserve pages home / features / contact and product-oriented chrome behavior unless product scope explicitly expands.
+- Preserve pages home / features / get-started / use-cases / agents / contact and product-oriented chrome behavior unless product scope explicitly expands.
 - Content, SEO defaults, branding, and many CTAs are host-owned; theme must degrade gracefully with placeholders when config is empty.
 - Tags/intent: product, landing, oss/saas—not blog-first or corporate consulting presentation.
 

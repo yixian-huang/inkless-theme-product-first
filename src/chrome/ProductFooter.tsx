@@ -49,6 +49,21 @@ export default function ProductFooter({ config }: FooterChromeProps) {
                 </a>
               </li>
               <li>
+                <a href="/get-started" className={link}>
+                  Get started
+                </a>
+              </li>
+              <li>
+                <a href="/use-cases" className={link}>
+                  Use cases
+                </a>
+              </li>
+              <li>
+                <a href="/agents" className={link}>
+                  For agents
+                </a>
+              </li>
+              <li>
                 <a href="/contact" className={link}>
                   Contact
                 </a>
