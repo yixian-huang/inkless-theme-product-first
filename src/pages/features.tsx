@@ -10,6 +10,7 @@ import {
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
 import { resolveProductCtas } from "../chrome/resolveProductCtas";
+import { useProductPageContent } from "../chrome/useProductPageContent";
 import {
   btnPrimary,
   btnSecondary,
@@ -33,7 +34,11 @@ type FeatureGroup = {
   items: FeatureItem[];
 };
 
-/** Capability catalog for product ops — grounded in shipped core (roadmap / README). */
+/**
+ * Neutral placeholder catalog only (theme-as-templates T5).
+ * Operational feature copy should live on Page slug=features (or home.features);
+ * FEATURE_GROUPS is empty-site fallback, not marketing SSOT.
+ */
 const FEATURE_GROUPS: FeatureGroup[] = [
   {
     id: "themes",
@@ -209,6 +214,13 @@ const FEATURE_GROUPS: FeatureGroup[] = [
   },
 ];
 
+type FeaturesPageConfig = {
+  title?: Localized;
+  lead?: Localized;
+  /** Optional override groups from Page publishedConfig (slug=features). */
+  groups?: FeatureGroup[];
+};
+
 export default function ProductFirstFeaturesPage() {
   const { config } = useGlobalConfig();
   const { defaultDescription, defaultOgImage, buildTitle } = useSEODefaults();
@@ -216,6 +228,12 @@ export default function ProductFirstFeaturesPage() {
   const themeSettings = useThemeSettings() as Record<string, unknown>;
   const ctas = resolveProductCtas(themeSettings);
   const siteConfig = (config as any)?.siteConfig ?? SITE_CONFIG_GLOBAL_DEFAULT;
+  // Thin shell: Page config when present; else neutral placeholders.
+  const pageCfg = useProductPageContent<FeaturesPageConfig>("features");
+  const groups =
+    Array.isArray(pageCfg.groups) && pageCfg.groups.length > 0
+      ? pageCfg.groups
+      : FEATURE_GROUPS;
 
   const pick = (value: any, fallback = "") =>
     pickLocaleValue({
@@ -227,8 +245,8 @@ export default function ProductFirstFeaturesPage() {
 
   const siteName = pick(siteConfig?.identity?.name, "Inkless");
   const title = buildTitle
-    ? buildTitle(pick({ zh: "能力", en: "Features" }))
-    : `${pick({ zh: "能力", en: "Features" })} · ${siteName}`;
+    ? buildTitle(pick(pageCfg.title ?? { zh: "能力", en: "Features" }))
+    : `${pick(pageCfg.title ?? { zh: "能力", en: "Features" })} · ${siteName}`;
 
   return (
     <>
@@ -238,13 +256,15 @@ export default function ProductFirstFeaturesPage() {
           <ProductPageShell className="py-16 md:py-20">
             <p className={sectionLabel}>{pick({ zh: "产品", en: "Product" })}</p>
             <h1 className={sectionTitle}>
-              {pick({ zh: "产品能力", en: "Product capabilities" })}
+              {pick(pageCfg.title ?? { zh: "产品能力", en: "Product capabilities" })}
             </h1>
             <p className={sectionLead}>
-              {pick({
-                zh: "面向运营与开发的核心能力一览——与仓库已交付能力对齐，而非路线图愿景。",
-                en: "Core capabilities for operators and developers—aligned with shipped product, not roadmap vapor.",
-              })}
+              {pick(
+                pageCfg.lead ?? {
+                  zh: "面向运营与开发的核心能力一览——与仓库已交付能力对齐，而非路线图愿景。",
+                  en: "Core capabilities for operators and developers—aligned with shipped product, not roadmap vapor.",
+                },
+              )}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/get-started" className={btnPrimary}>
@@ -267,7 +287,7 @@ export default function ProductFirstFeaturesPage() {
           </ProductPageShell>
         </section>
 
-        {FEATURE_GROUPS.map((group) => (
+        {groups.map((group) => (
           <section
             key={group.id}
             id={group.id}

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {
   PRODUCT_BRAND,
@@ -11,6 +11,7 @@ import {
   useThemeSettings,
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
+import { useProductPageContent } from "../chrome/useProductPageContent";
 import {
   isSameHref,
   isStockGetStartedLabel,
@@ -267,33 +268,8 @@ export default function ProductFirstHomePage() {
   };
 
   const siteConfig = (config as any)?.siteConfig ?? SITE_CONFIG_GLOBAL_DEFAULT;
-  const [homeCfg, setHomeCfg] = useState<ProductHomeConfig>(
-    () =>
-      ((config as any)?.home ??
-        (config as any)?.productHome ??
-        (config as any)?.pageConfig ??
-        {}) as ProductHomeConfig,
-  );
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/public/content/home");
-        if (!res.ok) return;
-        const data = await res.json();
-        const cfg = (data?.config ?? data) as ProductHomeConfig;
-        if (!cancelled && cfg && typeof cfg === "object") {
-          setHomeCfg(cfg);
-        }
-      } catch {
-        /* keep placeholder */
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  // Thin shell (T5): operational home data from Page dual-read helper, not theme-owned copy.
+  const homeCfg = useProductPageContent<ProductHomeConfig>("home");
 
   const siteName = pick(siteConfig?.identity?.name, PRODUCT_BRAND.name);
   const tagline = pick(siteConfig?.identity?.tagline, PRODUCT_BRAND.description);

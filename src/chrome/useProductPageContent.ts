@@ -4,11 +4,13 @@ import { pickLocaleValue, useLocaleMode } from "@inkless/theme-host";
 export type Localized = { zh?: string; en?: string; [k: string]: string | undefined };
 
 /**
- * Load optional hardcoded-page config for product-first theme pages.
+ * Load config for a theme display shell (T5).
  *
- * Prefer theme-as-templates Page data (GET /public/pages/:slug) when present;
- * fall back to legacy content_documents (GET /public/content/:pageKey).
- * Empty / failed fetch → `{}` so pages can degrade to placeholders.
+ * Theme `pages[]` components are thin renderers — operational copy/media live
+ * on Host Page (slug) or dual-read public content, never as theme SSOT.
+ *
+ * Order: GET /public/pages/:slug → GET /public/content/:pageKey (legacy).
+ * Empty / failed → `{}` so pages degrade to neutral placeholders only.
  */
 export function useProductPageContent<T extends object>(contentKey: string): T {
   const [cfg, setCfg] = useState<T>({} as T);

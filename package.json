@@ -1,6 +1,6 @@
 {
   "name": "@inkless/theme-product-first",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": false,
   "description": "Inkless product-first theme — software product landing, chrome, and product tokens",
   "type": "module",

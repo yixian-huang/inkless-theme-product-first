@@ -192,6 +192,8 @@ export const productFirstTheme: ThemePlugin = {
     },
   ],
 
+  // pages[] = display shells only (theme-as-templates). Operational data lives on
+  // Host Page entities (templateKey / publishedConfig), loaded via useProductPageContent.
   pages: [
     {
       slug: "home",
