@@ -12,3 +12,6 @@ assess-*.png
 critique-fix-*.png
 design-review-*.png
 impeccable-home-*.png
+
+# Impeccable critique snapshots (local review only)
+.impeccable/critique/
