@@ -2,7 +2,7 @@
   "id": "product-first",
   "name": "Product First",
   "nameZh": "产品优先",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "contractVersion": "1",
   "author": "Inkless CMS",
   "description": "Software product landing: hero, features, get-started, use cases, agents guide, optional changelog",
@@ -18,5 +18,47 @@
     "sharedGlobal": "__INKLESS_SHARED__",
     "hostGlobal": "InklessThemeHost",
     "registerGlobal": "__INKLESS_THEME_REGISTER__"
-  }
+  },
+  "contentSlots": [
+    {
+      "pageKey": "home",
+      "schemaId": "product-first/home@1",
+      "title": { "zh": "产品首页", "en": "Product home" },
+      "description": "Landing: hero / showcase / features / howItWorks / install / bottomCta",
+      "schema": "schemas/content/home.schema.json",
+      "mediaRefPaths": [
+        "hero.media",
+        "showcase.items[]",
+        "features.items[].media"
+      ],
+      "localizedPaths": [
+        "hero.eyebrow",
+        "hero.title",
+        "hero.subtitle",
+        "hero.badge",
+        "hero.primaryCta.label",
+        "hero.secondaryCta.label",
+        "showcase.title",
+        "features.title",
+        "features.items[].title",
+        "features.items[].description",
+        "howItWorks.title",
+        "howItWorks.steps[].title",
+        "howItWorks.steps[].description",
+        "install.title",
+        "install.caption",
+        "bottomCta.title",
+        "bottomCta.subtitle",
+        "bottomCta.primaryCta.label"
+      ],
+      "stringPaths": [
+        "install.code",
+        "hero.primaryCta.href",
+        "hero.secondaryCta.href",
+        "bottomCta.primaryCta.href",
+        "features.items[].href",
+        "features.items[].icon"
+      ]
+    }
+  ]
 }

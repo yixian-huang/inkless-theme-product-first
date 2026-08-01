@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "product-first/home@1",
+  "title": "Product First Home Content",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "hero": { "type": "object" },
+    "showcase": { "type": "object" },
+    "features": { "type": "object" },
+    "howItWorks": { "type": "object" },
+    "install": { "type": "object" },
+    "bottomCta": { "type": "object" }
+  },
+  "description": "Operational JSON for product-first landing. MediaRef leaves (url/alt/caption) must be strings; copy fields may be Localized {zh,en}. Path rules are authoritative in inkless.theme.json contentSlots."
+}
