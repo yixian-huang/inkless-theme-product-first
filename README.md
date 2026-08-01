@@ -6,7 +6,7 @@ Inkless **product-first** theme: software product landing (hero, capabilities, i
 |--|--|
 | Theme id | `product-first` |
 | Contract | `1` (`@inkless/theme-host`) |
-| Package version | `0.1.7` |
+| Package version | `0.1.9` |
 | Layout | `contentProfile: wide`, `maxWidth: 72rem` |
 | Docs | External URL only (`docsUrl` theme setting) |
 
@@ -74,7 +74,7 @@ GET /public/content/{contentKey}
 
 | contentKey | Shape (conceptual) | Empty behavior |
 |------------|--------------------|----------------|
-| `home` | hero, showcase, features, howItWorks, install, bottomCta | Identity + neutral placeholders |
+| `home` | hero, showcase, features, howItWorks, **factBar**, install, bottomCta | Identity + neutral placeholders |
 | `get-started` | hero, steps, install, checklist, next, bottomCta | Neutral steps / checklist / install default |
 | `use-cases` | hero, scenarios, bottomCta | Neutral scenario map |
 | `agents` | hero, principles, cli, bottomCta | Neutral principles + sample CLI |
@@ -82,7 +82,36 @@ GET /public/content/{contentKey}
 
 **Iron rule 3:** placeholders are short, neutral, bilingual. Final brand marketing copy must come from content schema / site config / identity—not as the only source hard-coded in the theme package.
 
-Localized fields use `{ zh?, en? }`. Install/CLI code blocks are plain strings.
+### MediaRef vs Localized (critical)
+
+| Kind | Shape | Where |
+|------|--------|--------|
+| **Localized copy** | `{ zh?: string; en?: string }` | hero.title, feature descriptions, CTA labels, install.caption, … |
+| **MediaRef leaves** | **plain `string` only** | `url`, `alt`, `caption` on hero.media / showcase.items / feature.media |
+
+```ts
+// ✅ correct
+media: { url: "/shots/admin.png", alt: "Admin", caption: "Dashboard" }
+
+// ❌ forbidden on MediaRef leaves — causes React #31 white screen if not coerced
+media: { caption: { zh: "管理台", en: "Admin" } }
+```
+
+Theme runtime **coerces** accidental bilingual bags via `resolveMediaText` (pickLocale / zh→en fallback) so the page does not white-screen. Operators and agents must still **author** MediaRef leaves as strings. Unit tests cover bilingual caption/alt safety.
+
+Install/CLI code blocks are plain strings.
+
+### Home fact bar (optional)
+
+Narrow trust strip before install:
+
+- Content: `home.factBar.items: string[] | Localized[]`
+- Or theme setting `factBar`: e.g. `v1.0 · AGPL · Single binary`
+- Empty → section not rendered
+
+### Align accent with product screenshots
+
+Default tokens use zinc primary + indigo signal (`#4f46e5`). Presets: **Neutral Product**, **Ocean**, **Midnight**. If product UI shots use a different brand color, override host **theme tokens** (`accent` / `accentHover`, optionally `primary`) in admin so chrome matches the product.
 
 ---
 

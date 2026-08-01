@@ -278,7 +278,7 @@ export default function ProductFirstFeaturesPage() {
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {group.items.map((item, i) => (
                   <article key={i} className={card}>
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent text-base font-semibold">
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-accent/10 text-accent text-base font-semibold">
                       <span aria-hidden>{item.mark}</span>
                     </div>
                     <h2 className="text-base font-semibold tracking-tight text-on-surface">
@@ -306,20 +306,28 @@ export default function ProductFirstFeaturesPage() {
               })}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a
-                href="https://github.com/yixian-huang/inkless"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-surface text-on-surface px-6 py-2.5 text-sm font-semibold shadow-lg"
+              <Link
+                to="/get-started"
+                className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-on-surface shadow-md"
               >
-                GitHub
-              </a>
+                {pick({ zh: "快速开始", en: "Get started" })}
+              </Link>
+              {ctas.githubUrl ? (
+                <a
+                  href={ctas.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-md border border-on-primary/25 px-5 py-2.5 text-sm font-semibold text-on-primary"
+                >
+                  GitHub
+                </a>
+              ) : null}
               {ctas.docsUrl ? (
                 <a
                   href={ctas.docsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-lg border border-on-primary/25 text-on-primary px-6 py-2.5 text-sm font-semibold"
+                  className="inline-flex items-center justify-center rounded-md border border-on-primary/25 px-5 py-2.5 text-sm font-semibold text-on-primary"
                 >
                   Docs ↗
                 </a>

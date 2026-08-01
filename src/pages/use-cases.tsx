@@ -266,7 +266,7 @@ export default function ProductFirstUseCasesPage() {
                       <div className="flex items-start gap-4">
                         <div
                           className={
-                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " +
+                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-md " +
                             `bg-accent/10 text-base font-semibold ${textAccentSignal}`
                           }
                         >
@@ -370,7 +370,7 @@ function FeaturedScenario({
       <div className="lg:col-span-4">
         <div
           className={
-            "flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-on-primary " +
+            "flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-on-primary " +
             "text-xl font-semibold shadow-md shadow-primary/20"
           }
         >
@@ -415,7 +415,7 @@ function FeaturedScenario({
   );
 
   const shellClass =
-    "mt-10 rounded-2xl border border-border/80 bg-surface-alt/50 p-6 md:p-8 " +
+    "mt-10 rounded-lg border border-border/80 bg-surface-alt/50 p-6 md:p-8 " +
     "shadow-sm shadow-on-surface/[0.03]";
 
   if (href) {

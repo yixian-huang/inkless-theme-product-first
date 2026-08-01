@@ -24,15 +24,15 @@ export default function ProductFooter({ config }: FooterChromeProps) {
   const link = `${linkQuiet} block py-1`;
 
   return (
-    <footer className="mt-auto border-t border-border bg-surface-alt/80 font-sans">
-      <div className="mx-auto px-4 md:px-content py-12 md:py-14 w-full" style={{ maxWidth }}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 text-sm">
-          <div className="space-y-3 max-w-xs">
+    <footer className="mt-auto border-t border-border/80 bg-surface-alt/60 font-sans">
+      <div className="mx-auto w-full px-4 py-12 md:px-content md:py-14" style={{ maxWidth }}>
+        <div className="grid grid-cols-1 gap-10 text-sm sm:grid-cols-3">
+          <div className="max-w-xs space-y-3">
             <p className="text-base font-semibold tracking-tight text-on-surface">
               {branding.siteName}
             </p>
             {branding.tagline ? (
-              <p className="text-sm text-on-surface-muted leading-relaxed">{branding.tagline}</p>
+              <p className="text-sm leading-relaxed text-on-surface-muted">{branding.tagline}</p>
             ) : null}
           </div>
           <div className="space-y-3">

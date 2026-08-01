@@ -46,7 +46,7 @@ It provides hard-coded product pages (home, features, contact), product-oriented
 | `/agents` | Agent collaboration principles + CLI craft — class C |
 | `/contact` | Contact / community links from branding and theme settings |
 
-**Chrome & system:** sticky product header with Docs/GitHub/primary CTA utilities; minimal footer; layout `contentProfile: wide`, `maxWidth: 72rem`; default + Midnight token presets; shared UI primitives (buttons, cards, product shot, showcase strip, media frame).
+**Chrome & system:** sticky product header with Docs/GitHub/primary CTA utilities (BrandMark + site name; logo only when host supplies a URL—no hard-coded lockup paths); minimal footer; layout `contentProfile: wide`, `maxWidth: 72rem`; default + Midnight token presets; shared UI primitives (buttons, cards, product shot, showcase strip, media frame). MediaRef `alt`/`caption` are plain strings (never Localized bags); runtime coerces mistakes to avoid white screens.
 
 **Hard constraints:**
 
@@ -62,7 +62,7 @@ It provides hard-coded product pages (home, features, contact), product-oriented
 
 - Package / theme name: **Product First** / 产品优先 (`product-first`).
 - Author attribution: Inkless CMS; repository under the Inkless first-party theme set.
-- Token defaults in code align with Inkless product mark accent (`#2563eb`) and ink neutrals—**product, not consulting teal**.
+- Token defaults: zinc neutrals + indigo signal—**multi-product neutral**, overridable to any product brand via host tokens.
 - Bilingual zh/en naming and copy patterns are expected.
 - No separate consumer brand for the theme package itself; sites inject their own identity via host branding.
 

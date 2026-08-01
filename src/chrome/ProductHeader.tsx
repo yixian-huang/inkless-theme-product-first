@@ -96,29 +96,38 @@ export default function ProductHeader({ config }: HeaderChromeProps) {
   const { brandMode } = useHeaderSettings();
   const branding = useBranding();
   const maxWidth = useContentMaxWidth();
+  /**
+   * Never force a missing logo path (no 404 lockup SVGs).
+   * Prefer host branding.logo.light; otherwise text site name.
+   */
+  const hasLogo = Boolean(branding.logo?.light?.trim());
   const mode =
     brandMode === "avatar" || brandMode === "none"
       ? brandMode
-      : branding.logo?.light
+      : brandMode === "logo" && hasLogo
         ? "logo"
-        : "text";
+        : brandMode === "text" || !hasLogo
+          ? "text"
+          : hasLogo
+            ? "logo"
+            : "text";
 
   return (
     <BaseSiteHeader
       config={config}
       variant="blog"
       languagePlacement="inline"
-      headerClassName="bg-white/85 backdrop-blur-xl border-b border-border/70 font-sans supports-[backdrop-filter]:bg-white/75"
+      headerClassName="border-b border-border/60 bg-surface/80 font-sans backdrop-blur-xl supports-[backdrop-filter]:bg-surface/70"
       navPaddingClassName="py-3.5"
-      containerClassName="mx-auto px-4 md:px-content w-full"
+      containerClassName="mx-auto w-full px-4 md:px-content"
       containerStyle={{ maxWidth }}
       brand={
         <BrandMark
           brandMode={mode}
           hideDefaultLogo
           showLabel
-          textClassName="text-sm font-sans font-semibold tracking-tight text-on-surface"
-          logoClassName="h-7 w-auto"
+          textClassName="font-sans text-sm font-semibold tracking-tight text-on-surface"
+          logoClassName="h-7 max-h-7 w-auto object-contain"
         />
       }
       utilities={<ProductHeaderCtas />}

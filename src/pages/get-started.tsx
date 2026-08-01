@@ -336,7 +336,7 @@ export default function ProductFirstGetStartedPage() {
                     <div className="flex items-start gap-4">
                       <span
                         className={
-                          "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl " +
+                          "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg " +
                           "bg-primary text-on-primary text-sm font-bold shadow-md shadow-primary/20"
                         }
                         aria-hidden

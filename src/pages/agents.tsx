@@ -254,7 +254,7 @@ export default function ProductFirstAgentsPage() {
                     <div className="flex items-start gap-4">
                       <span
                         className={
-                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl " +
+                          "flex h-10 w-10 shrink-0 items-center justify-center rounded-md " +
                           `bg-accent/10 text-xs font-bold tracking-wide ${textAccentSignal}`
                         }
                         aria-hidden

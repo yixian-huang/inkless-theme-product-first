@@ -12,7 +12,7 @@ export default function InstallTerminal({
 }: InstallTerminalProps) {
   return (
     <div
-      className="rounded-2xl border border-border overflow-hidden shadow-xl shadow-on-surface/5"
+      className="overflow-hidden rounded-lg border border-border shadow-[0_12px_32px_-16px_rgb(0_0_0/0.25)]"
       role="region"
       aria-label={label}
     >

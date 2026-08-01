@@ -19,19 +19,22 @@ export const PRODUCT_DEFAULT_LAYOUT = {
   footer: { style: "minimal" as const },
 };
 
+/**
+ * Neutral product defaults — zinc floor + indigo signal.
+ * Override accent/primary in host tokens to match any product UI.
+ */
 export const productFirstTokens: ThemeTokens = {
   colors: {
-    // Align with Inkless mark (#2563eb) + ink neutrals — product, not consulting teal
-    primary: "#0f172a",
-    primaryDark: "#020617",
-    accent: "#2563eb",
-    accentHover: "#1d4ed8",
+    primary: "#18181b",
+    primaryDark: "#09090b",
+    accent: "#4f46e5",
+    accentHover: "#4338ca",
     surface: "#ffffff",
-    surfaceAlt: "#f8fafc",
-    onPrimary: "#f8fafc",
-    onSurface: "#0f172a",
-    onSurfaceMuted: "#64748b",
-    border: "#e2e8f0",
+    surfaceAlt: "#fafafa",
+    onPrimary: "#fafafa",
+    onSurface: "#18181b",
+    onSurfaceMuted: "#71717a",
+    border: "#e4e4e7",
   },
   fonts: {
     sans: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
@@ -45,7 +48,7 @@ export const productFirstTokens: ThemeTokens = {
   },
   layout: {
     maxWidth: "72rem",
-    borderRadius: "0.75rem",
+    borderRadius: "0.5rem",
     contentPadding: "1.5rem",
     sectionSpacing: "5rem",
     contentGap: "2rem",
@@ -60,10 +63,10 @@ export const productFirstTheme: ThemePlugin = {
     description: "Software product landing: hero, features, get-started, use cases, agents guide",
     descriptionZh: "软件产品介绍站：主视觉、能力、上手、用例、Agent 导览",
     author: "Inkless CMS",
-    version: "0.1.7",
+    version: "0.1.9",
     type: "theme",
-    preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
-    tags: ["product", "landing", "oss"],
+    preview: "linear-gradient(135deg, #18181b 0%, #4f46e5 100%)",
+    tags: ["product", "landing", "oss", "saas"],
   },
   contractVersion: PRODUCT_FIRST_CONTRACT_VERSION,
   defaultTokens: productFirstTokens,
@@ -97,7 +100,7 @@ export const productFirstTheme: ThemePlugin = {
           type: "text",
           label: "GitHub URL",
           labelZh: "GitHub 链接",
-          defaultValue: "https://github.com/yixian-huang/inkless",
+          defaultValue: "",
         },
         {
           name: "primaryCtaLabel",
@@ -127,35 +130,63 @@ export const productFirstTheme: ThemePlugin = {
           labelZh: "页眉显示社交链接",
           defaultValue: false,
         },
+        {
+          name: "factBar",
+          type: "text",
+          label: "Home fact bar (· separated, e.g. v1.0 · AGPL · Single binary)",
+          labelZh: "首页事实条（用 · 分隔，如 v1.0 · AGPL · 单二进制）",
+          defaultValue: "",
+        },
       ],
     },
   ],
   tokenPresets: [
     {
       id: "default",
-      name: "Ink Product",
-      nameZh: "墨色产品",
-      preview: "linear-gradient(135deg, #0f172a 0%, #2563eb 100%)",
+      name: "Neutral Product",
+      nameZh: "中性产品",
+      preview: "linear-gradient(135deg, #18181b 0%, #4f46e5 100%)",
       tokens: productFirstTokens,
+    },
+    {
+      id: "ocean",
+      name: "Ocean",
+      nameZh: "海洋",
+      preview: "linear-gradient(135deg, #0f172a 0%, #0ea5e9 100%)",
+      tokens: {
+        ...productFirstTokens,
+        colors: {
+          primary: "#0f172a",
+          primaryDark: "#020617",
+          accent: "#0284c7",
+          accentHover: "#0369a1",
+          surface: "#ffffff",
+          surfaceAlt: "#f8fafc",
+          onPrimary: "#f8fafc",
+          onSurface: "#0f172a",
+          onSurfaceMuted: "#64748b",
+          border: "#e2e8f0",
+        },
+      },
     },
     {
       id: "midnight",
       name: "Midnight",
       nameZh: "午夜",
-      preview: "linear-gradient(135deg, #020617 0%, #3b82f6 100%)",
+      preview: "linear-gradient(135deg, #09090b 0%, #818cf8 100%)",
       tokens: {
         ...productFirstTokens,
         colors: {
-          primary: "#e2e8f0",
-          primaryDark: "#f8fafc",
-          accent: "#60a5fa",
-          accentHover: "#93c5fd",
-          surface: "#0b1220",
-          surfaceAlt: "#111827",
-          onPrimary: "#0f172a",
-          onSurface: "#e2e8f0",
-          onSurfaceMuted: "#94a3b8",
-          border: "#1e293b",
+          primary: "#f4f4f5",
+          primaryDark: "#fafafa",
+          accent: "#818cf8",
+          accentHover: "#a5b4fc",
+          surface: "#09090b",
+          surfaceAlt: "#18181b",
+          onPrimary: "#18181b",
+          onSurface: "#f4f4f5",
+          onSurfaceMuted: "#a1a1aa",
+          border: "#27272a",
         },
       },
     },
@@ -248,7 +279,11 @@ export const productFirstTheme: ThemePlugin = {
   },
 };
 
-export { resolveProductCtas } from "./chrome/resolveProductCtas";
+export {
+  resolveProductCtas,
+  resolveUnifiedPrimaryCta,
+  isStockGetStartedLabel,
+} from "./chrome/resolveProductCtas";
 export { default as ProductFirstHomePage } from "./pages/home";
 export { default as ProductFirstFeaturesPage } from "./pages/features";
 export { default as ProductFirstGetStartedPage } from "./pages/get-started";
@@ -265,3 +300,5 @@ export { default as PageHero } from "./ui/PageHero";
 export { default as BottomCtaBand } from "./ui/BottomCtaBand";
 export { default as InstallTerminal } from "./ui/InstallTerminal";
 export { default as ActionLink } from "./ui/ActionLink";
+export { resolveMediaText, resolveMediaRef } from "./ui/resolveMediaText";
+export type { MediaRef } from "./ui/ProductShot";

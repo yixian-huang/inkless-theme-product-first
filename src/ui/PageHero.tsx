@@ -15,8 +15,7 @@ type PageHeroProps = {
 };
 
 /**
- * Compact secondary-page hero — same tokens/chrome rhythm as features,
- * without the home product-shot stage.
+ * Compact secondary-page hero — quiet product floor, no product-shot stage.
  */
 export default function PageHero({
   eyebrow,
@@ -27,27 +26,17 @@ export default function PageHero({
   titleId = "page-hero-title",
 }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-surface-alt/30 font-sans">
+    <section className="relative overflow-hidden border-b border-border bg-surface font-sans">
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        aria-hidden
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px), " +
-            "linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          maskImage: "radial-gradient(ellipse 70% 80% at 20% 0%, black 15%, transparent 70%)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute -top-24 left-0 h-64 w-[28rem] rounded-full opacity-30 blur-3xl"
+        className="pointer-events-none absolute inset-0 opacity-100"
         aria-hidden
         style={{
           background:
-            "radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent)",
+            "radial-gradient(ellipse 70% 90% at 0% 0%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 55%), " +
+            "radial-gradient(ellipse 50% 60% at 100% 20%, color-mix(in srgb, var(--color-primary) 4%, transparent), transparent 50%)",
         }}
       />
-      <ProductPageShell className="relative py-16 md:py-20">
+      <ProductPageShell className="relative py-14 md:py-20">
         <p className={sectionLabel}>{eyebrow}</p>
         <h1 id={titleId} className={sectionTitle}>
           {title}

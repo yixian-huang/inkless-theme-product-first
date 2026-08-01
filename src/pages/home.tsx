@@ -11,7 +11,12 @@ import {
   useThemeSettings,
 } from "@inkless/theme-host";
 import ProductPageShell from "../shell/ProductPageShell";
-import { isSameHref, resolveProductCtas } from "../chrome/resolveProductCtas";
+import {
+  isSameHref,
+  isStockGetStartedLabel,
+  resolveProductCtas,
+  resolveUnifiedPrimaryCta,
+} from "../chrome/resolveProductCtas";
 import {
   DEFAULT_INSTALL_CODE,
   isOperatorJargon,
@@ -20,6 +25,7 @@ import {
 } from "../chrome/visitorCopy";
 import ProductShot, { type MediaRef } from "../ui/ProductShot";
 import ShowcaseStrip from "../ui/ShowcaseStrip";
+import { resolveMediaText } from "../ui/resolveMediaText";
 import {
   btnPrimary,
   btnSecondary,
@@ -65,6 +71,13 @@ type ProductHomeConfig = {
     title?: Localized;
     steps?: Array<{ title?: Localized; description?: Localized }>;
   };
+  /**
+   * Optional narrow facts strip (version · license · single binary).
+   * Empty / missing → not rendered.
+   */
+  factBar?: {
+    items?: Array<Localized | string>;
+  };
   install?: {
     title?: Localized;
     code?: string;
@@ -77,56 +90,59 @@ type ProductHomeConfig = {
   };
 };
 
-/** Visitor-safe placeholders — no theme-id laundry lists or ops dialect. */
+/**
+ * Neutral software-product placeholders — visitor-safe, not tied to a vendor.
+ * Final marketing copy should come from host content documents.
+ */
 const PLACEHOLDER_FEATURES = [
   {
-    title: { zh: "主题驱动", en: "Theme-driven" },
+    title: { zh: "上手简单", en: "Quick to start" },
     description: {
-      zh: "产品站、博客或企业站由主题决定呈现，而不是写死一套页面。",
-      en: "Product, blog, or corporate presentation is owned by themes—not hard-coded shells.",
+      zh: "清晰的安装与引导路径，访客能马上理解下一步。",
+      en: "A clear install and onboarding path so visitors know the next step.",
     },
   },
   {
-    title: { zh: "内容运营", en: "Content ops" },
+    title: { zh: "能力清晰", en: "Clear capabilities" },
     description: {
-      zh: "页面、文章、媒体与发布版本，适合持续运营的软件站点。",
-      en: "Pages, articles, media, and publish versions for ongoing product sites.",
+      zh: "用几条可验证的能力说明产品边界，而不是空泛口号。",
+      en: "A few verifiable capabilities—not vague slogans.",
     },
   },
   {
     title: { zh: "可扩展", en: "Extensible" },
     description: {
-      zh: "插件与稳定契约，把定制留在扩展层。",
-      en: "Plugins and a stable contract keep customization out of the core.",
+      zh: "稳定接口与扩展点，把定制留在外围。",
+      en: "Stable interfaces keep customization outside the core.",
     },
   },
 ];
 
 const PLACEHOLDER_STEPS = [
   {
-    title: { zh: "部署实例", en: "Deploy" },
+    title: { zh: "安装", en: "Install" },
     description: {
-      zh: "部署实例并完成初始化。",
-      en: "Deploy an instance and finish setup.",
+      zh: "按文档完成安装或部署。",
+      en: "Install or deploy using the docs.",
     },
   },
   {
-    title: { zh: "选择主题", en: "Choose theme" },
+    title: { zh: "配置", en: "Configure" },
     description: {
-      zh: "在站点配置中设置名称、Logo 与产品站主题。",
-      en: "Set name, logo, and a product theme in site config.",
+      zh: "设置品牌、域名与关键选项。",
+      en: "Set brand, domain, and key options.",
     },
   },
   {
-    title: { zh: "发布内容", en: "Publish" },
+    title: { zh: "上线", en: "Ship" },
     description: {
-      zh: "编辑页面与内容，对外发布产品站。",
-      en: "Edit pages and content, then publish.",
+      zh: "发布内容并对外提供服务。",
+      en: "Publish content and go live.",
     },
   },
 ];
 
-const FEATURE_MARKS = ["◇", "▣", "◎"];
+const FEATURE_MARKS = ["01", "02", "03"];
 
 function isExternalHref(href: string): boolean {
   return /^(https?:|mailto:|tel:)/i.test(href.trim());
@@ -161,6 +177,74 @@ function ActionLink({ href, className, children }: ActionLinkProps) {
       {children}
     </a>
   );
+}
+
+type FeatureItem = NonNullable<NonNullable<ProductHomeConfig["features"]>["items"]>[number];
+
+function FeatureCard({
+  item,
+  index,
+  pick,
+}: {
+  item: FeatureItem;
+  index: number;
+  pick: (value: Localized | string | undefined, fallback?: string) => string;
+}) {
+  const title = pick(item.title, `Feature ${index + 1}`);
+  const body = scrubVisitorCopy(pick(item.description));
+  const href = typeof item.href === "string" ? item.href.trim() : "";
+  const mediaUrl = typeof item.media?.url === "string" ? item.media.url.trim() : "";
+  const mediaAlt = resolveMediaText(item.media?.alt, {
+    fallback: title,
+    pickLocale: (bag) => pick(bag, ""),
+  });
+
+  const cardInner = (
+    <>
+      {mediaUrl ? (
+        <div className="mb-4 -mx-0.5 aspect-[16/10] overflow-hidden rounded-md border border-border/70 bg-surface-alt">
+          <img
+            src={mediaUrl}
+            alt={mediaAlt}
+            className="h-full w-full object-cover object-top"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ) : (
+        <div
+          className={
+            "mb-4 flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-surface-alt text-[11px] font-semibold tabular-nums " +
+            textAccentSignal
+          }
+        >
+          <span aria-hidden>{item.icon || FEATURE_MARKS[index % FEATURE_MARKS.length]}</span>
+        </div>
+      )}
+      <h3 className="text-[0.9375rem] font-semibold tracking-tight text-on-surface transition-colors group-hover/card:text-accent">
+        {title}
+      </h3>
+      <p className="mt-2 text-sm leading-relaxed text-on-surface-muted">{body}</p>
+      {href ? (
+        <p className={`mt-4 text-sm font-medium ${textAccentSignal}`}>
+          {pick({ zh: "了解更多 →", en: "Learn more →" })}
+        </p>
+      ) : null}
+    </>
+  );
+
+  const cardClass = href
+    ? `${card} group/card cursor-pointer focus-within:ring-2 focus-within:ring-accent/40`
+    : card;
+
+  if (href) {
+    return (
+      <ActionLink href={href} className={cardClass}>
+        {cardInner}
+      </ActionLink>
+    );
+  }
+  return <article className={cardClass}>{cardInner}</article>;
 }
 
 export default function ProductFirstHomePage() {
@@ -222,23 +306,57 @@ export default function ProductFirstHomePage() {
   const heroBadge = pick(homeCfg.hero?.badge, "");
   const heroMedia = homeCfg.hero?.media;
 
-  const primaryLabel = pick(homeCfg.hero?.primaryCta?.label, ctas.primaryCtaLabel);
-  const primaryHref = homeCfg.hero?.primaryCta?.href?.trim() || ctas.primaryCtaHref;
-  const secondaryLabel = pick(homeCfg.hero?.secondaryCta?.label, ctas.secondaryCtaLabel);
-  const secondaryHref = homeCfg.hero?.secondaryCta?.href?.trim() || ctas.secondaryCtaHref;
+  /**
+   * P0 CTA contract: “快速开始 / Get started” always matches header → /get-started.
+   * Host content that points stock label at #install is rewritten (not silent dual-path).
+   */
+  const unifiedPrimary = resolveUnifiedPrimaryCta({
+    contentLabel: pick(homeCfg.hero?.primaryCta?.label, ""),
+    contentHref: homeCfg.hero?.primaryCta?.href?.trim() || "",
+    settingsLabel: ctas.primaryCtaLabel,
+    settingsHref: ctas.primaryCtaHref,
+  });
+  const primaryLabel =
+    unifiedPrimary.label === "Get started"
+      ? pick({ zh: "快速开始", en: "Get started" })
+      : unifiedPrimary.label;
+  const primaryHref = unifiedPrimary.href;
+
+  const installNavLabel = pick({ zh: "查看安装", en: "View install" });
+  let secondaryLabel = pick(homeCfg.hero?.secondaryCta?.label, "");
+  let secondaryHref = homeCfg.hero?.secondaryCta?.href?.trim() || "";
+  if (!secondaryHref) {
+    if (ctas.githubUrl && !isSameHref(primaryHref, ctas.githubUrl)) {
+      secondaryHref = ctas.githubUrl;
+      secondaryLabel = secondaryLabel || "GitHub";
+    } else if (!isSameHref(primaryHref, "#install")) {
+      secondaryHref = "#install";
+      secondaryLabel = secondaryLabel || installNavLabel;
+    } else if (ctas.secondaryCtaHref && !isSameHref(primaryHref, ctas.secondaryCtaHref)) {
+      secondaryHref = ctas.secondaryCtaHref;
+      secondaryLabel = secondaryLabel || ctas.secondaryCtaLabel || "GitHub";
+    }
+  } else if (!secondaryLabel) {
+    secondaryLabel = isSameHref(secondaryHref, "#install")
+      ? installNavLabel
+      : isSameHref(secondaryHref, ctas.githubUrl)
+        ? "GitHub"
+        : ctas.secondaryCtaLabel || pick({ zh: "了解更多", en: "Learn more" });
+  }
   const showHeroSecondary = Boolean(secondaryHref) && !isSameHref(primaryHref, secondaryHref);
 
   const showcaseTitle = pick(
     homeCfg.showcase?.title,
     pick({ zh: "产品界面", en: "Product interface" }),
   );
+  /** ≤3 narrative beats: upload / manage / integrate (not a 5-up gallery). */
   const showcaseItems: MediaRef[] | undefined =
     homeCfg.showcase?.items && homeCfg.showcase.items.length > 0
-      ? homeCfg.showcase.items
+      ? homeCfg.showcase.items.slice(0, 3)
       : [
-          { alt: pick({ zh: "编辑器", en: "Editor" }) },
-          { alt: pick({ zh: "主题", en: "Themes" }) },
-          { alt: pick({ zh: "发布", en: "Publish" }) },
+          { alt: pick({ zh: "上传", en: "Upload" }) },
+          { alt: pick({ zh: "管理", en: "Manage" }) },
+          { alt: pick({ zh: "对接", en: "Integrate" }) },
         ];
 
   const featuresTitle = pick(homeCfg.features?.title, pick({ zh: "核心能力", en: "Capabilities" }));
@@ -246,6 +364,26 @@ export default function ProductFirstHomePage() {
     homeCfg.features?.items && homeCfg.features.items.length > 0
       ? homeCfg.features.items
       : PLACEHOLDER_FEATURES;
+  /** Mobile priority: at most 3 capability cards; rest via /features. */
+  const featureItemsMobile = featureItems.slice(0, 3);
+  const hasMoreFeatures = featureItems.length > 3;
+
+  /** Fact bar: content `factBar.items` or theme setting `factBar` ( · -separated). */
+  const factBarFromContent = (homeCfg.factBar?.items ?? [])
+    .map((item) => (typeof item === "string" ? item.trim() : pick(item, "").trim()))
+    .filter(Boolean);
+  const factBarSetting =
+    typeof settings.factBar === "string"
+      ? settings.factBar
+      : typeof (settings as { header?: { factBar?: string } }).header?.factBar === "string"
+        ? (settings as { header: { factBar: string } }).header.factBar
+        : "";
+  const factBarFromSettings = factBarSetting
+    .split(/[·|]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const factBarItems =
+    factBarFromContent.length > 0 ? factBarFromContent : factBarFromSettings;
 
   const howTitle = pick(homeCfg.howItWorks?.title, pick({ zh: "如何开始", en: "How it works" }));
   const steps =
@@ -253,7 +391,12 @@ export default function ProductFirstHomePage() {
       ? homeCfg.howItWorks.steps
       : PLACEHOLDER_STEPS;
 
-  const installTitle = pick(homeCfg.install?.title, pick({ zh: "快速开始", en: "Quick start" }));
+  /** Install band title — never share “快速开始” with the primary CTA. */
+  const installTitleRaw = pick(homeCfg.install?.title, "");
+  const installTitle =
+    !installTitleRaw || isStockGetStartedLabel(installTitleRaw)
+      ? pick({ zh: "安装", en: "Install" })
+      : installTitleRaw;
   const hasDocs = Boolean(ctas.docsUrl);
   const resolvedInstallCode = resolveVisitorInstallCode(
     homeCfg.install?.code?.trim() || "",
@@ -281,7 +424,7 @@ export default function ProductFirstHomePage() {
 
   const bottomTitle = pick(
     homeCfg.bottomCta?.title,
-    pick({ zh: "开始构建你的产品站", en: "Build your product site" }),
+    pick({ zh: "准备好开始了吗？", en: "Ready to get started?" }),
   );
   const bottomSubtitle = scrubVisitorCopy(pick(homeCfg.bottomCta?.subtitle, tagline));
 
@@ -325,43 +468,46 @@ export default function ProductFirstHomePage() {
         aria-labelledby="home-hero-title"
       >
         <div className="pointer-events-none absolute inset-0 bg-surface" aria-hidden />
+        {/* Soft dual bloom — product-agnostic atmosphere, not a dense tech grid */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.45]"
-          aria-hidden
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px), " +
-              "linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, black 20%, transparent 75%)",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute -top-32 left-1/2 h-[28rem] w-[48rem] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+          className="pointer-events-none absolute inset-0"
           aria-hidden
           style={{
             background:
-              "radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 35%, transparent), transparent)",
+              "radial-gradient(ellipse 55% 70% at 15% 10%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 55%), " +
+              "radial-gradient(ellipse 50% 60% at 90% 20%, color-mix(in srgb, var(--color-primary) 5%, transparent), transparent 50%), " +
+              "radial-gradient(ellipse 40% 40% at 60% 100%, color-mix(in srgb, var(--color-accent) 6%, transparent), transparent 55%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.28]"
+          aria-hidden
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px), " +
+              "linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+            maskImage: "radial-gradient(ellipse 75% 65% at 50% -10%, black 10%, transparent 70%)",
           }}
         />
 
         <ProductPageShell className="relative py-16 md:py-24 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-            <div className="lg:col-span-5 max-w-xl min-w-0">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-12">
+            <div className="min-w-0 max-w-xl lg:col-span-5">
               {(heroEyebrow || heroBadge) && (
-                <div className="flex flex-wrap items-center gap-3 mb-5">
+                <div className="mb-6 flex flex-wrap items-center gap-2.5">
                   {heroEyebrow ? (
                     <span
                       className={
-                        "inline-flex items-center rounded-full border border-accent/25 bg-accent/10 " +
-                        `px-3 py-1 text-xs font-semibold tracking-wide whitespace-nowrap ${textAccentSignal}`
+                        "inline-flex items-center whitespace-nowrap rounded-md border border-accent/20 " +
+                        `bg-accent/[0.07] px-2.5 py-0.5 text-[11px] font-semibold tracking-wide ${textAccentSignal}`
                       }
                     >
                       {heroEyebrow}
                     </span>
                   ) : null}
                   {heroBadge ? (
-                    <span className="inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-surface-alt border border-border text-on-surface-muted">
+                    <span className="inline-flex rounded-md border border-border/80 bg-surface/90 px-2.5 py-0.5 text-[11px] font-medium text-on-surface-muted">
                       {heroBadge}
                     </span>
                   ) : null}
@@ -370,37 +516,37 @@ export default function ProductFirstHomePage() {
 
               <h1
                 id="home-hero-title"
-                className="text-4xl sm:text-5xl md:text-[3.1rem] font-semibold tracking-tight text-on-surface leading-[1.15] break-words text-balance"
+                className="break-words text-balance text-4xl font-semibold leading-[1.1] tracking-[-0.035em] text-on-surface sm:text-5xl md:text-[3.15rem]"
               >
                 {heroTitle}
               </h1>
               {heroSubtitle ? (
-                <p className="mt-6 text-lg md:text-xl text-on-surface-muted leading-relaxed break-words text-pretty">
+                <p className="mt-5 max-w-md break-words text-pretty text-[0.975rem] leading-relaxed text-on-surface-muted md:text-lg">
                   {heroSubtitle}
                 </p>
               ) : null}
 
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <ActionLink
                   href={primaryHref}
-                  className={`${btnPrimary} w-full sm:w-auto justify-center`}
+                  className={`${btnPrimary} min-h-12 w-full justify-center sm:w-auto`}
                 >
                   {primaryLabel}
-                  <span aria-hidden className="opacity-80">
+                  <span aria-hidden className="opacity-90">
                     →
                   </span>
                 </ActionLink>
                 {showHeroSecondary ? (
                   <ActionLink
                     href={secondaryHref}
-                    className={`${btnSecondary} w-full sm:w-auto justify-center`}
+                    className={`${btnSecondary} min-h-12 w-full justify-center sm:w-auto`}
                   >
                     {secondaryLabel}
                   </ActionLink>
                 ) : null}
                 <Link
                   to="/features"
-                  className={`${btnGhost} px-2 py-2.5 min-h-11 justify-center sm:justify-start sm:min-h-0`}
+                  className={`${btnGhost} min-h-11 justify-center px-2 py-2.5 sm:min-h-0 sm:justify-start`}
                 >
                   {pick({ zh: "能力", en: "Features" })}
                   <span aria-hidden>→</span>
@@ -408,14 +554,14 @@ export default function ProductFirstHomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-7 lg:pl-4 min-w-0 w-full">
+            <div className="min-w-0 w-full lg:col-span-7 lg:pl-2">
               <div className="relative w-full">
                 <div
-                  className="pointer-events-none absolute -inset-6 rounded-[2rem] opacity-70 blur-2xl"
+                  className="pointer-events-none absolute -inset-6 rounded-lg opacity-70 blur-3xl"
                   aria-hidden
                   style={{
                     background:
-                      "radial-gradient(ellipse at 60% 40%, color-mix(in srgb, var(--color-accent) 32%, transparent), transparent 70%)",
+                      "radial-gradient(ellipse at 55% 45%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 68%)",
                   }}
                 />
                 <ProductShot
@@ -423,7 +569,8 @@ export default function ProductFirstHomePage() {
                   className="relative w-full"
                   polishedPlaceholder
                   mockVariant="admin"
-                  placeholderTitle={pick({ zh: "Inkless 管理界面", en: "Inkless admin" })}
+                  chromeLabel={siteName}
+                  placeholderTitle={pick({ zh: "产品界面", en: "Product" })}
                 />
               </div>
             </div>
@@ -432,96 +579,65 @@ export default function ProductFirstHomePage() {
       </section>
 
       <section
-        className="border-b border-border bg-surface-alt/40 font-sans"
+        className="border-b border-border bg-surface-alt/50 font-sans"
         aria-label={showcaseTitle}
       >
-        <ProductPageShell className="py-16 md:py-20">
-          <ShowcaseStrip title={showcaseTitle} items={showcaseItems} />
+        <ProductPageShell className="py-14 md:py-16 lg:py-20">
+          <ShowcaseStrip
+            title={showcaseTitle}
+            items={showcaseItems}
+            chromeLabel={siteName}
+          />
         </ProductPageShell>
       </section>
 
       <section className="bg-surface font-sans" aria-labelledby="home-features-title">
-        <ProductPageShell className="py-20 md:py-24">
-          <p className={sectionLabel}>{pick({ zh: "能力", en: "Product" })}</p>
+        <ProductPageShell className="py-16 md:py-24">
+          <p className={sectionLabel}>{pick({ zh: "能力", en: "Capabilities" })}</p>
           <h2 id="home-features-title" className={sectionTitle}>
             {featuresTitle}
           </h2>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-            {featureItems.map((item, i) => {
-              const title = pick(item.title, `Feature ${i + 1}`);
-              const body = scrubVisitorCopy(pick(item.description));
-              const href = typeof item.href === "string" ? item.href.trim() : "";
-              const cardInner = (
-                <>
-                  <div
-                    className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
-                    }}
-                    aria-hidden
-                  />
-                  {item.media?.url ? (
-                    <div className="mb-4 -mx-1 overflow-hidden rounded-xl border border-border/70 aspect-[16/10] bg-surface-alt">
-                      <img
-                        src={item.media.url}
-                        alt={item.media.alt || title}
-                        className="h-full w-full object-cover object-top"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className={
-                        "mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg " +
-                        textAccentSignal
-                      }
-                    >
-                      <span aria-hidden>{item.icon || FEATURE_MARKS[i % FEATURE_MARKS.length]}</span>
-                    </div>
-                  )}
-                  <h3 className="text-base font-semibold tracking-tight text-on-surface group-hover/card:text-accent transition-colors">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm text-on-surface-muted leading-relaxed">{body}</p>
-                  {href ? (
-                    <p className={`mt-4 text-sm font-medium ${textAccentSignal}`}>
-                      {pick({ zh: "了解更多 →", en: "Learn more →" })}
-                    </p>
-                  ) : null}
-                </>
-              );
-              const cardClass = href
-                ? `${card} group/card cursor-pointer focus-within:ring-2 focus-within:ring-accent/40`
-                : card;
-              if (href) {
-                return (
-                  <ActionLink key={`${title}-${i}`} href={href} className={cardClass}>
-                    {cardInner}
-                  </ActionLink>
-                );
-              }
-              return (
-                <article key={`${title}-${i}`} className={cardClass}>
-                  {cardInner}
-                </article>
-              );
-            })}
+          {/* Mobile: ≤3 cards; desktop: full list */}
+          <div className="mt-10 grid grid-cols-1 gap-5 md:mt-12 md:hidden md:gap-6">
+            {featureItemsMobile.map((item, i) => (
+              <FeatureCard
+                key={`m-${pick(item.title, `f-${i}`)}-${i}`}
+                item={item}
+                index={i}
+                pick={pick}
+              />
+            ))}
+            {hasMoreFeatures ? (
+              <div className="pt-1">
+                <Link to="/features" className={`${btnGhost} min-h-11`}>
+                  {pick({ zh: "查看全部能力 →", en: "All capabilities →" })}
+                </Link>
+              </div>
+            ) : null}
+          </div>
+          <div className="mt-12 hidden grid-cols-1 gap-5 md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+            {featureItems.map((item, i) => (
+              <FeatureCard
+                key={`d-${pick(item.title, `f-${i}`)}-${i}`}
+                item={item}
+                index={i}
+                pick={pick}
+              />
+            ))}
           </div>
         </ProductPageShell>
       </section>
 
       <section
-        className="border-t border-border bg-surface-alt/40 font-sans"
+        className="border-t border-border bg-surface-alt/50 font-sans"
         aria-labelledby="home-how-title"
       >
-        <ProductPageShell className="py-20 md:py-24">
-          <p className={sectionLabel}>{pick({ zh: "流程", en: "Workflow" })}</p>
+        <ProductPageShell className="py-16 md:py-24">
+          <p className={sectionLabel}>{pick({ zh: "流程", en: "How it works" })}</p>
           <h2 id="home-how-title" className={sectionTitle}>
             {howTitle}
           </h2>
-          <ol className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 relative">
+          <ol className="relative mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8">
             {steps.map((step, i) => {
               const stepTitle = pick(step.title, `Step ${i + 1}`);
               const stepBody = scrubVisitorCopy(pick(step.description));
@@ -529,17 +645,17 @@ export default function ProductFirstHomePage() {
                 <li key={`${stepTitle}-${i}`} className="relative">
                   <div className="flex items-start gap-4">
                     <span
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-on-primary text-sm font-bold shadow-md shadow-primary/20"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary text-xs font-semibold tabular-nums text-on-primary"
                       aria-hidden
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <div className="pt-1 min-w-0">
-                      <h3 className="text-base font-semibold tracking-tight text-on-surface">
+                    <div className="min-w-0 pt-1">
+                      <h3 className="text-[0.9375rem] font-semibold tracking-tight text-on-surface">
                         <span className="sr-only">{`${i + 1}. `}</span>
                         {stepTitle}
                       </h3>
-                      <p className="mt-2 text-sm text-on-surface-muted leading-relaxed">{stepBody}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-on-surface-muted">{stepBody}</p>
                     </div>
                   </div>
                 </li>
@@ -548,6 +664,28 @@ export default function ProductFirstHomePage() {
           </ol>
         </ProductPageShell>
       </section>
+
+      {factBarItems.length > 0 ? (
+        <section
+          className="border-t border-border bg-surface-alt/50 font-sans"
+          aria-label={pick({ zh: "产品要点", en: "At a glance" })}
+        >
+          <ProductPageShell className="py-3.5 md:py-4">
+            <ul className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-center text-xs font-medium tracking-wide text-on-surface-muted sm:text-sm">
+              {factBarItems.map((label, i) => (
+                <li key={`${label}-${i}`} className="inline-flex items-center">
+                  {i > 0 ? (
+                    <span className="mx-2.5 select-none text-border" aria-hidden>
+                      ·
+                    </span>
+                  ) : null}
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
+          </ProductPageShell>
+        </section>
+      ) : null}
 
       <section
         id="install"
@@ -584,20 +722,20 @@ export default function ProductFirstHomePage() {
                 ) : null}
               </div>
             </div>
-            <div className="md:col-span-8 mt-8 md:mt-0">
+            <div className="mt-8 md:col-span-8 md:mt-0">
               <div
-                className="rounded-2xl border border-border overflow-hidden shadow-xl shadow-on-surface/5"
+                className="overflow-hidden rounded-lg border border-border/80 shadow-[0_12px_32px_-16px_rgb(0_0_0/0.28)]"
                 role="region"
                 aria-label={pick({ zh: "安装命令", en: "Install commands" })}
               >
                 <div
-                  className="flex items-center gap-2 px-4 py-3 bg-[#0a0f1a] border-b border-white/10"
+                  className="flex items-center gap-2 border-b border-white/[0.06] bg-[#0c0f14] px-4 py-3"
                   aria-hidden
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-                  <span className="ml-3 text-xs font-medium tracking-wide text-slate-400">
+                  <span className="ml-3 text-[11px] font-medium tracking-wide text-zinc-500">
                     terminal
                   </span>
                 </div>
@@ -616,26 +754,27 @@ export default function ProductFirstHomePage() {
       >
         <div className="absolute inset-0 bg-primary" aria-hidden />
         <div
-          className="pointer-events-none absolute inset-0 opacity-30"
+          className="pointer-events-none absolute inset-0"
           aria-hidden
           style={{
             background:
-              "radial-gradient(ellipse 60% 80% at 80% 50%, var(--color-accent), transparent)",
+              "radial-gradient(ellipse 55% 80% at 85% 40%, color-mix(in srgb, var(--color-accent) 50%, transparent), transparent 70%), " +
+              "radial-gradient(ellipse 40% 50% at 10% 90%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 60%)",
           }}
         />
-        <ProductPageShell className="relative py-20 md:py-24 text-center">
+        <ProductPageShell className="relative py-16 text-center md:py-24">
           <h2
             id="home-bottom-title"
-            className="text-3xl md:text-4xl font-semibold tracking-tight text-on-primary text-balance"
+            className="text-balance text-2xl font-semibold tracking-[-0.03em] text-on-primary md:text-3xl lg:text-4xl"
           >
             {bottomTitle}
           </h2>
           {bottomSubtitle ? (
-            <p className="mt-4 text-base md:text-lg text-on-primary/75 max-w-xl mx-auto text-pretty">
+            <p className="mx-auto mt-4 max-w-lg text-pretty text-base text-on-primary/70 md:text-lg">
               {bottomSubtitle}
             </p>
           ) : null}
-          <div className="mt-10 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+          <div className="mt-9 flex flex-col flex-wrap justify-center gap-3 sm:flex-row">
             <ActionLink href={bottomCtaHref} className={`${btnOnPrimary} w-full sm:w-auto`}>
               {bottomCtaLabel}
               <span aria-hidden className="ml-1 opacity-80">

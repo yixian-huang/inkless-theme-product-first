@@ -8,7 +8,7 @@ type BottomCtaBandProps = {
   titleId?: string;
 };
 
-/** Inverted primary band — matches home/features closing conversion strip. */
+/** Closing conversion band — refined ink floor with soft accent bloom. */
 export default function BottomCtaBand({
   title,
   subtitle,
@@ -22,26 +22,27 @@ export default function BottomCtaBand({
     >
       <div className="absolute inset-0 bg-primary" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 opacity-30"
+        className="pointer-events-none absolute inset-0"
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 60% 80% at 80% 50%, var(--color-accent), transparent)",
+            "radial-gradient(ellipse 55% 80% at 85% 40%, color-mix(in srgb, var(--color-accent) 55%, transparent), transparent 70%), " +
+            "radial-gradient(ellipse 40% 50% at 10% 90%, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent 60%)",
         }}
       />
-      <ProductPageShell className="relative py-16 md:py-20 text-center">
+      <ProductPageShell className="relative py-16 text-center md:py-20">
         <h2
           id={titleId}
-          className="text-2xl md:text-3xl font-semibold tracking-tight text-on-primary text-balance"
+          className="text-balance text-2xl font-semibold tracking-[-0.03em] text-on-primary md:text-3xl"
         >
           {title}
         </h2>
         {subtitle ? (
-          <p className="mt-3 text-base md:text-lg text-on-primary/75 max-w-xl mx-auto text-pretty">
+          <p className="mx-auto mt-3 max-w-lg text-pretty text-base text-on-primary/70 md:text-lg">
             {subtitle}
           </p>
         ) : null}
-        <div className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+        <div className="mt-9 flex flex-col flex-wrap justify-center gap-3 sm:flex-row">
           {children}
         </div>
       </ProductPageShell>

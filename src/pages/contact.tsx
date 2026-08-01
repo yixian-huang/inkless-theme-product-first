@@ -96,7 +96,7 @@ export default function ProductFirstContactPage() {
                   {...(ch.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface px-5 py-4 shadow-sm transition-all duration-200 hover:border-accent/40 hover:shadow-md hover:shadow-accent/5"
+                  className="group flex items-center justify-between gap-4 rounded-lg border border-border bg-surface px-5 py-4 shadow-sm transition-all duration-200 hover:border-accent/40 hover:shadow-md hover:shadow-accent/5"
                 >
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-on-surface-muted">
